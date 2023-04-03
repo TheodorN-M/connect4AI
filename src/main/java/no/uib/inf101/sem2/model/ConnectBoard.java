@@ -37,6 +37,7 @@ public class ConnectBoard extends Grid<Character> {
         return array;
     }
 
+
     public char[] getCharArrayForCol(int col){
         char [] array = new char[rows()];
         for (int i = 0; i < rows(); i++) {

@@ -57,24 +57,41 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
     @Override
     public void clockTick() {
         if (!dropPieces() && gameState == GameState.ACTIVE_GAME){
-            if (board.prettyString().contains("rrrr")){
+            findWinner();
+        }
+    }
+    
+    public Turn getTurn(){
+        return turn;
+    }
+    
+    @Override
+    public String getWinner(){
+        return winner;
+    }
+    
+    private void findWinner(){
+        if (board.prettyString().contains("rrrr")){
+            winner = "Red";
+            gameState = GameState.GAME_OVER;
+        }
+        if (board.prettyString().contains("yyyy")){
+            winner = "Yellow";
+            gameState = GameState.GAME_OVER;
+        }
+
+        for (int col = 0; col < board.cols(); col++) {
+            String colAString = String.valueOf(board.getCharArrayForCol(col));
+            if (colAString.contains("rrrr")){
                 winner = "Red";
                 gameState = GameState.GAME_OVER;
             }
-            if (board.prettyString().contains("yyyy")){
+            if (colAString.contains("yyyy")){
                 winner = "Yellow";
                 gameState = GameState.GAME_OVER;
             }
         }
-    }
-
-    public Turn getTurn(){
-        return turn;
-    }
-
-    @Override
-    public String getWinner(){
-        return winner;
+        
     }
 
     
