@@ -11,7 +11,7 @@ import no.uib.inf101.sem2.controller.ControllableModel;
 
 public class ConnectModel implements ViewableConnectModel, ControllableModel {
     ConnectBoard board;
-
+    String winner = "";
     GameState gameState = GameState.ACTIVE_GAME;
     Turn turn = Turn.RED;
 
@@ -56,26 +56,41 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
 
     @Override
     public void clockTick() {
-        dropPieces();
+        if (!dropPieces() && gameState == GameState.ACTIVE_GAME){
+            if (board.prettyString().contains("rrrr")){
+                winner = "Red";
+                gameState = GameState.GAME_OVER;
+            }
+            if (board.prettyString().contains("yyyy")){
+                winner = "Yellow";
+                gameState = GameState.GAME_OVER;
+            }
+        }
     }
 
     public Turn getTurn(){
         return turn;
     }
 
+    @Override
+    public String getWinner(){
+        return winner;
+    }
 
     
     @Override
     public void placePiece(int col) {
-        Piece piece = new Piece('y', new CellPosition(0, col));
-        if (turn == Turn.RED){
-            piece = new Piece('r', new CellPosition(0, col));
-            nextTurn(piece);
-        }
+        if (gameState == GameState.ACTIVE_GAME){
+            Piece piece = new Piece('y', new CellPosition(0, col));
+            if (turn == Turn.RED){
+                piece = new Piece('r', new CellPosition(0, col));
+                nextTurn(piece);
+            }
         
-        if (isLegalPos(piece)){
-            board.set(new CellPosition(0, col), piece.getColorCharacter());
-            nextTurn(piece);
+            if (isLegalPos(piece)){
+                board.set(new CellPosition(0, col), piece.getColorCharacter());
+                nextTurn(piece);
+            }
         }
 
 
@@ -88,27 +103,30 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
             turn = Turn.RED;
         }
 
+
     }
     @Override
-    public void dropPieces() {
+    public boolean dropPieces() {
         for (GridCell<Character> gridCell : board) {
             if (gridCell.value() != '-'){
                 CellPosition newCP = new CellPosition(gridCell.pos().row() + 1, gridCell.pos().col());
                 if (board.positionIsOnGrid(newCP) && board.get(newCP) == '-'){
                     board.set(gridCell.pos(), '-');
                     board.set(newCP, gridCell.value());
+                    return true;
                 }
             }
         }
+        return false;
 
     }
     @Override
     public int dropTimer() {
-        return 800;
+        return 300;
     }
     @Override
     public String getTurnAsString() {
-        return "" + turn + "";
+        return "" + turn;
     }
 
 

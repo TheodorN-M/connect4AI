@@ -6,7 +6,6 @@ import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
 
-import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.model.GameState;
 import no.uib.inf101.sem2.view.ConnectView;
 
@@ -42,19 +41,19 @@ public class GameController implements java.awt.event.MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        model.placePiece(getColFromCoordinate(e.getX()));
-        view.repaint();
-
+        
     }
-
+    
     private int getColFromCoordinate(int x){
         int col = (x * model.getDimension().cols() / view.getWidth());
         return col;
-
+        
     }
-
+    
     @Override
     public void mousePressed(MouseEvent e) {
+        model.placePiece(getColFromCoordinate(e.getX()));
+        view.repaint();
     }
 
 

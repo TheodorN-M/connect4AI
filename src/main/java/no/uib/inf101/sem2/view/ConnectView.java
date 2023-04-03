@@ -71,7 +71,7 @@ public class ConnectView extends JPanel {
         }
         g.setFont(this.theme.getScoreFont());
         g.setColor(this.theme.getFontColor());
-        Inf101Graphics.drawCenteredString(g, view.getTurnAsString() + "'s turn.", 0, 0, getWidth(), OUTERMARGIN);
+        Inf101Graphics.drawCenteredString(g, view.getTurnAsString() + "'s turn. Click desired column", 0, 0, getWidth(), OUTERMARGIN);
         
       }
       /**
@@ -110,7 +110,7 @@ public class ConnectView extends JPanel {
 
     g.setFont(this.theme.getFont());
     g.setColor(this.theme.getFontColor());
-    Inf101Graphics.drawCenteredString(g, "Game over", 0, 0, getWidth(), getHeight());
+    Inf101Graphics.drawCenteredString(g, "Game over, " + view.getWinner() + " wins!", 0, 0, getWidth(), getHeight());
 
 
   }

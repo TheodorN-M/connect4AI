@@ -29,6 +29,21 @@ public class ConnectBoard extends Grid<Character> {
         return res.strip();
 
     }
+    public char[] getCharArrayForRow(int row){
+        char [] array = new char[cols()];
+        for (int i = 0; i < cols(); i++) {
+            array[i] = this.get(new CellPosition(row, i));
+        }
+        return array;
+    }
+
+    public char[] getCharArrayForCol(int col){
+        char [] array = new char[rows()];
+        for (int i = 0; i < rows(); i++) {
+            array[i] = this.get(new CellPosition(i, col));
+        }
+        return array;
+    }
 
     /**
      * Checks if the Character {@code element} exists in the given row
@@ -37,69 +52,35 @@ public class ConnectBoard extends Grid<Character> {
      * @param element
      * @return true or false
      */
-    private boolean elementInRow(int row, Character element){
-        for (int col = 0; col < cols(); col++) {
+    private char fourInRow(int row){
+        int counter = 0;
+        for (int col = 0; col < cols()-1; col++) {
+            CellPosition pos1 = new CellPosition(row, col);
+            CellPosition pos2 = new CellPosition(row, col + 1);
+            if ( this.get(pos1).equals( this.get(pos2) )) {
+                counter++;
+            }
+        }
+        if (counter > 3){
+        }
+        return '-';
+    }
+
+    /**
+     * Checks if the Character {@code element} exists in the given collumn
+     * 
+     * @param col
+     * @param element
+     * @return true or false
+     */
+    private boolean fourInCol(int col, Character element){
+        for (int row = 0; row < rows(); row++) {
             CellPosition pos = new CellPosition(row, col);
-            if ( element.equals( this.get(pos) )) {
+            if ( element.equals(this.get(pos))){
                 return true;
             }
         }
-        return false;
-    }
-
-    /**
-     * Places the given element in all columns of the given row
-     * 
-     * @param row
-     * @param element
-     */
-    private void setRow(int row, Character element){
-        for (int col = 0; col < cols(); col++) {
-            CellPosition pos = new CellPosition(row, col);
-            this.set(pos, element);
-        }
-    }
-
-    /**
-     * Copies an entire row from one to another
-     * 
-     * @param orgRow
-     * @param newRow
-     */
-    private void copyRow(int orgRow, int newRow){
-        for (int col = 0; col < cols(); col++) {
-            CellPosition posOrgRow = new CellPosition(orgRow, col);
-            CellPosition posNewRow = new CellPosition(newRow, col);
-            this.set(posNewRow, this.get(posOrgRow));
-        }
-    }
-    
-    /**
-     * Removes the full rows from the board
-     * 
-     * @return an int representing the amount of rows removed
-     */
-    public int removeRows(){
-        int rowsRemoved = 0;
-        int rowA = rows()-1;
-        int rowB = rows()-1;
-
-        for (int colA = rowA; colA >= 0; colA--) {
-            for (int colB = rowB; colB >= 0 && !(elementInRow(rowB, '-')); colB--) {
-                rowsRemoved ++;
-                rowB -= 1;
-            }
-            if (rowB >= 0){
-                copyRow(rowB, rowA);
-            }
-            else{
-                setRow(rowA, '-');
-            }
-            rowA -= 1;
-            rowB -= 1;
-            
-        }
-        return rowsRemoved;
+       return false;
     }
 
 }

@@ -29,6 +29,7 @@ public interface ViewableConnectModel {
   String getTurnAsString();
 
 
+  String getWinner();
   /**
    * This happens every time the clock ticks
    */
