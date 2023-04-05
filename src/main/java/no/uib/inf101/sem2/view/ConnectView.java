@@ -110,7 +110,7 @@ public class ConnectView extends JPanel {
 
     g.setFont(this.theme.getFont());
     g.setColor(this.theme.getFontColor());
-    Inf101Graphics.drawCenteredString(g, "Game over, " + view.getWinner() + " wins!", 0, 0, getWidth(), getHeight());
+    Inf101Graphics.drawCenteredString(g, "Game over, " + view.getWinnerString() + " wins!", 0, 0, getWidth(), getHeight());
 
 
   }

@@ -1,11 +1,7 @@
 package no.uib.inf101.sem2;
 
-
-
 import javax.swing.JFrame;
-
 import no.uib.inf101.sem2.controller.GameController;
-import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.model.ConnectBoard;
 import no.uib.inf101.sem2.model.ConnectModel;
 import no.uib.inf101.sem2.view.ConnectView;

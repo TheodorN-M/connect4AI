@@ -29,14 +29,13 @@ public class ConnectBoard extends Grid<Character> {
         return res.strip();
 
     }
-    public char[] getCharArrayForRow(int row){
-        char [] array = new char[cols()];
-        for (int i = 0; i < cols(); i++) {
-            array[i] = this.get(new CellPosition(row, i));
-        }
-        return array;
-    }
-
+    // private char[] getCharArrayForRow(int row){
+    //     char [] array = new char[cols()];
+    //     for (int i = 0; i < cols(); i++) {
+    //         array[i] = this.get(new CellPosition(row, i));
+    //     }
+    //     return array;
+    // }
 
     public char[] getCharArrayForCol(int col){
         char [] array = new char[rows()];
@@ -45,6 +44,17 @@ public class ConnectBoard extends Grid<Character> {
         }
         return array;
     }
+
+    public char[][] getBoardAs2DArray(){
+        char[][] array = new char[rows()][cols()];
+        for (int row = 0; row < rows(); row++) {
+            for (int col = 0; col < cols(); col++) {
+                array[row][col] = this.get(new CellPosition(row, col));
+            }
+        }
+        return array;
+    }
+
 
     /**
      * Checks if the Character {@code element} exists in the given row

@@ -66,8 +66,17 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
     }
     
     @Override
-    public String getWinner(){
+    public String getWinnerString() {
         return winner;
+    }
+    @Override
+    public void getWinner(char c){
+        if (c == 'r'){
+            winner = "Red";
+        }
+        else{
+            winner = "Yellow";
+        }
     }
     
     private void findWinner(){
@@ -81,17 +90,51 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
         }
 
         for (int col = 0; col < board.cols(); col++) {
-            String colAString = String.valueOf(board.getCharArrayForCol(col));
-            if (colAString.contains("rrrr")){
+            String colAsString = String.valueOf(board.getCharArrayForCol(col));
+            if (colAsString.contains("rrrr")){
                 winner = "Red";
                 gameState = GameState.GAME_OVER;
             }
-            if (colAString.contains("yyyy")){
+            if (colAsString.contains("yyyy")){
                 winner = "Yellow";
                 gameState = GameState.GAME_OVER;
             }
         }
+        // Sjekke om noen har vunnet diagonalt
+        char[][] DArray = board.getBoardAs2DArray();
+        for (int col = 0; col < board.cols()-4; col++) {
+            for (int row = 0; row < board.rows()-4; row++) {
+                diagRightWinner(DArray, row, col);
+                col += 4;
+                diagLeftWinner(DArray, row, col);
+                col -= 4;
+            }
+        }
         
+
+    }
+    private void diagRightWinner(char[][] board, int rowStart, int colStart){
+        char a0 = board[rowStart][colStart];
+        char b1 = board[rowStart +1][colStart +1];
+        char c2 = board[rowStart +2][colStart +2];
+        char d3 = board[rowStart +3][colStart +3];
+
+        if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-'){
+            getWinner(a0);
+            gameState = GameState.GAME_OVER;
+        }
+    }
+
+    private void diagLeftWinner(char[][] board, int rowStart, int colStart){
+        char a0 = board[rowStart][colStart];
+        char b1 = board[rowStart +1][colStart -1];
+        char c2 = board[rowStart +2][colStart -2];
+        char d3 = board[rowStart +3][colStart -3];
+
+        if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-'){
+            getWinner(a0);
+            gameState = GameState.GAME_OVER;
+        }
     }
 
     
