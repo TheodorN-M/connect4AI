@@ -53,6 +53,10 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
         return gameState;
     }
 
+    private void setGameOver(){
+        gameState = GameState.GAME_OVER;
+    }
+
 
     @Override
     public void clockTick() {
@@ -74,36 +78,38 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
         if (c == 'r'){
             winner = "Red";
         }
-        else{
+        else if (c == 'y'){
             winner = "Yellow";
         }
     }
     
     private void findWinner(){
+        // Find horizontal winner with prettyString method
         if (board.prettyString().contains("rrrr")){
             winner = "Red";
-            gameState = GameState.GAME_OVER;
+            setGameOver();
         }
         if (board.prettyString().contains("yyyy")){
             winner = "Yellow";
-            gameState = GameState.GAME_OVER;
+            setGameOver();
         }
 
+        // Find vertical winner with a character array as a string
         for (int col = 0; col < board.cols(); col++) {
             String colAsString = String.valueOf(board.getCharArrayForCol(col));
             if (colAsString.contains("rrrr")){
                 winner = "Red";
-                gameState = GameState.GAME_OVER;
+                setGameOver();
             }
             if (colAsString.contains("yyyy")){
                 winner = "Yellow";
-                gameState = GameState.GAME_OVER;
+                setGameOver();
             }
         }
         // Sjekke om noen har vunnet diagonalt
         char[][] DArray = board.getBoardAs2DArray();
         for (int col = 0; col < board.cols()-4; col++) {
-            for (int row = 0; row < board.rows()-4; row++) {
+            for (int row = 0; row < board.rows()-3; row++) {
                 diagRightWinner(DArray, row, col);
                 col += 4;
                 diagLeftWinner(DArray, row, col);
@@ -121,7 +127,7 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
 
         if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-'){
             getWinner(a0);
-            gameState = GameState.GAME_OVER;
+            setGameOver();
         }
     }
 
@@ -133,7 +139,7 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
 
         if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-'){
             getWinner(a0);
-            gameState = GameState.GAME_OVER;
+            setGameOver();
         }
     }
 
