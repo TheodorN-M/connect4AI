@@ -173,17 +173,18 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
     }
     @Override
     public boolean dropPieces() {
+        boolean dropping = false;
         for (GridCell<Character> gridCell : board) {
             if (gridCell.value() != '-'){
                 CellPosition newCP = new CellPosition(gridCell.pos().row() + 1, gridCell.pos().col());
                 if (board.positionIsOnGrid(newCP) && board.get(newCP) == '-'){
                     board.set(gridCell.pos(), '-');
                     board.set(newCP, gridCell.value());
-                    return true;
+                    dropping = true;
                 }
             }
         }
-        return false;
+        return dropping;
 
     }
     @Override
