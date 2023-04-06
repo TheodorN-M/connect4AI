@@ -4,13 +4,11 @@ import javax.swing.JPanel;
 
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
-import no.uib.inf101.sem2.grid.GridDimension;
 import no.uib.inf101.sem2.model.GameState;
 import no.uib.inf101.sem2.model.ViewableConnectModel;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.Dimension;
@@ -55,14 +53,10 @@ public class ConnectView extends JPanel {
 
 
         g.draw(box);
-        GridDimension dimension = view.getDimension();
-        CellPositionToPixelConverter converter = new CellPositionToPixelConverter(box, dimension, INNERMARGIN);
-        
-
-        
+        CellPositionToPixelConverter converter = new CellPositionToPixelConverter(box, view.getDimension(), INNERMARGIN);
+                
         drawPiecesAndHolesInBoard(g, view.getHolesOnBoard(), converter, theme);
         
-
         
         if (view.getGameState() == GameState.GAME_OVER){
           drawGameOver(g);
@@ -75,7 +69,7 @@ public class ConnectView extends JPanel {
       }
       
       /**
-       * Draws each 'hole' in the playing board
+       * Draws each 'hole' and pieces in the playing board
        * 
        * @param g graphics
        * @param table iterable list of the cells to be drawn
@@ -86,14 +80,11 @@ public class ConnectView extends JPanel {
         
         for (GridCell<Character> gridCell : table) {
           CellPosition pos = gridCell.pos();
-          Ellipse2D ellipse = converter.getBoundsForHole(pos);
-          Character c = gridCell.value();
-          Color color = theme.getCellColor(c);
-          g.setColor(color);
 
-          if (gridCell.value() == '-'){
-            g.setColor(Color.WHITE);
-          }
+          Ellipse2D ellipse = converter.getBoundsForHole(pos);
+
+          g.setColor(theme.getCellColor(gridCell.value()));
+
           g.fill(ellipse);
       
         }
@@ -110,7 +101,8 @@ public class ConnectView extends JPanel {
 
     g.setFont(this.theme.getFont());
     g.setColor(this.theme.getFontColor());
-    Inf101Graphics.drawCenteredString(g, "Game over, " + view.getWinnerString() + " wins!", 0, 0, getWidth(), getHeight());
+    Inf101Graphics.drawCenteredString(g, "Game over, " + view.getWinnerString() + " wins!",
+                                   0, 0, getWidth(), getHeight());
 
 
   }
