@@ -80,8 +80,6 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
     }
 
     
-
-    
     @Override
     public void placePiece(int col) {
         if (gameState == GameState.ACTIVE_GAME){

@@ -11,7 +11,7 @@ public class DefaultColorTheme implements ColorTheme {
             case 'r' -> Color.RED;
             case 'y' -> Color.YELLOW;
 
-            case '-' -> getBackgroundColor();
+            case '-' -> Color.WHITE;
             default -> throw new IllegalArgumentException(
                 "No available color for '" + c + "'");
           };
