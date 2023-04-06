@@ -41,13 +41,10 @@ public class GameController implements java.awt.event.MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        
     }
     
     private int getColFromCoordinate(int x){
-        int col = (x * model.getDimension().cols() / view.getWidth());
-        return col;
-        
+        return (x * model.getDimension().cols() / view.getWidth());
     }
     
     @Override

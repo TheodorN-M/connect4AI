@@ -29,13 +29,6 @@ public class ConnectBoard extends Grid<Character> {
         return res.strip();
 
     }
-    // private char[] getCharArrayForRow(int row){
-    //     char [] array = new char[cols()];
-    //     for (int i = 0; i < cols(); i++) {
-    //         array[i] = this.get(new CellPosition(row, i));
-    //     }
-    //     return array;
-    // }
 
     public char[] getCharArrayForCol(int col){
         char [] array = new char[rows()];
@@ -55,43 +48,24 @@ public class ConnectBoard extends Grid<Character> {
         return array;
     }
 
-
     /**
-     * Checks if the Character {@code element} exists in the given row
-     * 
-     * @param row
-     * @param element
-     * @return true or false
+     * The method drops all pieces on the board one spot down, if possible.
+     * @return true if any pieces were dropped, otherwise false 
      */
-    private char fourInRow(int row){
-        int counter = 0;
-        for (int col = 0; col < cols()-1; col++) {
-            CellPosition pos1 = new CellPosition(row, col);
-            CellPosition pos2 = new CellPosition(row, col + 1);
-            if ( this.get(pos1).equals( this.get(pos2) )) {
-                counter++;
+    public boolean dropPieces() {
+        boolean dropping = false;
+        for (GridCell<Character> gridCell : this) {
+            if (gridCell.value() != '-'){
+                CellPosition newCP = new CellPosition(gridCell.pos().row() + 1, gridCell.pos().col());
+                if (this.positionIsOnGrid(newCP) && this.get(newCP) == '-'){
+                    this.set(gridCell.pos(), '-');
+                    this.set(newCP, gridCell.value());
+                    dropping = true;
+                }
             }
         }
-        if (counter > 3){
-        }
-        return '-';
-    }
+        return dropping;
 
-    /**
-     * Checks if the Character {@code element} exists in the given collumn
-     * 
-     * @param col
-     * @param element
-     * @return true or false
-     */
-    private boolean fourInCol(int col, Character element){
-        for (int row = 0; row < rows(); row++) {
-            CellPosition pos = new CellPosition(row, col);
-            if ( element.equals(this.get(pos))){
-                return true;
-            }
-        }
-       return false;
     }
 
 }

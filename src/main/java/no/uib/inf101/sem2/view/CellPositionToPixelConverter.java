@@ -28,40 +28,21 @@ public class CellPositionToPixelConverter {
    * Converts the given CellPosition to coordinates in the view
    * 
    * @param cp CellPosition
-   * @return a Rectangle2D-object ready for display in the window
+   * @return a Ellipse2D-object ready for display in the window
    */
-  public Rectangle2D getRectangleBoundsForCell(CellPosition cp){
+  public Ellipse2D getBoundsForHole(CellPosition cp){
     int rows = gd.rows();
     int cols = gd.cols();
 
     double width = box.getWidth();
     double height = box.getHeight();
 
-    double cellWidth = (width - (this.margin * (cols +1))) / cols;                 // finner cellevidden utifra bredden til bakgrunnen, delt på antall kolonner
-    double cellHeight = (height - (this.margin * (rows +1))) / rows;               // finner cellebredden på samme måte
+    double cellWidth = (width - (this.margin * (cols +1))) / cols;              
+    double cellHeight = (height - (this.margin * (rows +1))) / rows;               
 
-    double cellX = box.getX() + (this.margin * (cp.col() + 1)) + (cellWidth * cp.col());    // Finner x- og y-verdi 
+    double cellX = box.getX() + (this.margin * (cp.col() + 1)) + (cellWidth * cp.col());    
     double cellY = box.getY() + (this.margin * (cp.row() + 1)) + (cellHeight * cp.row());
 
-    Rectangle2D cell = new Rectangle2D.Double(cellX, cellY, cellWidth, cellHeight);         // Cellens egne koordinater returneres
-    return cell; 
-  }
-
-
-  public Ellipse2D getEllipseBoundsForCell(CellPosition cp){
-    int rows = gd.rows();
-    int cols = gd.cols();
-
-    double width = box.getWidth();
-    double height = box.getHeight();
-
-    double cellWidth = (width - (this.margin * (cols +1))) / cols;                 // finner cellevidden utifra bredden til bakgrunnen, delt på antall kolonner
-    double cellHeight = (height - (this.margin * (rows +1))) / rows;               // finner cellebredden på samme måte
-
-    double cellX = box.getX() + (this.margin * (cp.col() + 1)) + (cellWidth * cp.col());    // Finner x- og y-verdi 
-    double cellY = box.getY() + (this.margin * (cp.row() + 1)) + (cellHeight * cp.row());
-
-    Ellipse2D cell = new Ellipse2D.Double(cellX, cellY, cellWidth, cellHeight);         // Cellens egne koordinater returneres
-    return cell; 
+    return new Ellipse2D.Double(cellX, cellY, cellWidth, cellHeight);         
   }
 }

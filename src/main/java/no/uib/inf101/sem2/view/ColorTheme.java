@@ -12,14 +12,6 @@ public interface ColorTheme {
      */
     Color getCellColor(Character c);
 
-
-    /**
-     * 
-     * Gets a color for the frame
-     * @return a Color-object
-     */
-    Color getFrameColor();
-
     /**
      * Returns a Color object for the background
      * @return a Color-object
@@ -49,5 +41,5 @@ public interface ColorTheme {
      * This method gets the font for the score at the top of the game window 
      * @return a Font-object with font style and size
      */
-    Font getScoreFont();
+    Font getTurnFont();
 }

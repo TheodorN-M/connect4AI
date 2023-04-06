@@ -18,12 +18,10 @@ import java.awt.Dimension;
 
 
 public class ConnectView extends JPanel {
+    private ColorTheme theme;
     private final ViewableConnectModel view;
-
     private static final double OUTERMARGIN = 20;
     private static final double INNERMARGIN = 20;
-
-    private ColorTheme theme;
     
     public ConnectView(ViewableConnectModel view){
       this.view = view;
@@ -62,20 +60,22 @@ public class ConnectView extends JPanel {
         
 
         
-        drawPiecesAndHolesInBoard(g, view.getTilesOnBoard(), converter, theme);
+        drawPiecesAndHolesInBoard(g, view.getHolesOnBoard(), converter, theme);
         
 
         
         if (view.getGameState() == GameState.GAME_OVER){
           drawGameOver(g);
         }
-        g.setFont(this.theme.getScoreFont());
+        g.setFont(this.theme.getTurnFont());
         g.setColor(this.theme.getFontColor());
-        Inf101Graphics.drawCenteredString(g, view.getTurnAsString() + "'s turn. Click desired column", 0, 0, getWidth(), OUTERMARGIN);
+        Inf101Graphics.drawCenteredString(g, view.getTurnAsString() + "'s turn. Click desired column", 
+                                        0, 0, getWidth(), OUTERMARGIN);
         
       }
+      
       /**
-       * Draws each cell
+       * Draws each 'hole' in the playing board
        * 
        * @param g graphics
        * @param table iterable list of the cells to be drawn
@@ -86,7 +86,7 @@ public class ConnectView extends JPanel {
         
         for (GridCell<Character> gridCell : table) {
           CellPosition pos = gridCell.pos();
-          Ellipse2D ellipse = converter.getEllipseBoundsForCell(pos);
+          Ellipse2D ellipse = converter.getBoundsForHole(pos);
           Character c = gridCell.value();
           Color color = theme.getCellColor(c);
           g.setColor(color);
@@ -100,7 +100,7 @@ public class ConnectView extends JPanel {
           
       }
         /**
-   * Draws an overlay when the round is lost
+   * Draws an overlay when the round is over
    * 
    * @param g graphics
    */

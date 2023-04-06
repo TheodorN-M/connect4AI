@@ -18,10 +18,7 @@ public interface ControllableModel {
     GridDimension getDimension();
 
 
-    /**
-     * The function drops the Tetromino to the spot directly under when the spacebar is pressed, if possible.
-     */
-    boolean dropPieces();
+
 
     /**
    * Returns the current GameState, {@code ACTIVE_GAME} or {@code GAME_OVER}

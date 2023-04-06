@@ -12,12 +12,12 @@ public interface ViewableConnectModel {
   GridDimension getDimension();
 
   /**
-   * Iterates over all tiles on the board. 
-   * Returns an Object that gives all positions on the board with tilhørende symbol
+   * Iterates over all holes on the board. 
+   * Returns an Object that gives all positions on the board with red, yellow or no piece
    * 
-   * @return an iterable object with the tiles on the board
+   * @return an iterable object with the holes on the board
    */
-  Iterable<GridCell<Character>> getTilesOnBoard();
+  Iterable<GridCell<Character>> getHolesOnBoard();
 
 
   /**
@@ -26,15 +26,22 @@ public interface ViewableConnectModel {
    */
   GameState getGameState();
 
+/**
+ * 
+ * @return Who's turn it is as a String
+ */
   String getTurnAsString();
 
 
-  void getWinner(char c);
   /**
    * This happens every time the clock ticks
    */
   void clockTick();
 
+  /**
+   * 
+   * @return the winner as a String
+   */
   String getWinnerString();
 
 
