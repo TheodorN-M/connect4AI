@@ -12,10 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
-import no.uib.inf101.sem2.grid.Grid;
 
-// import no.uib.inf101.sem2.model.ConnectBoard;
-// import no.uib.inf101.sem2.model.ConnectModel;
 import no.uib.inf101.sem2.model.piece.Turn;
 
 public class ModelTest {

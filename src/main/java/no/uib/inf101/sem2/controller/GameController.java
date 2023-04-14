@@ -6,6 +6,7 @@ import javax.swing.Timer;
 
 import java.awt.event.ActionEvent;
 
+import no.uib.inf101.sem2.midi.Song;
 import no.uib.inf101.sem2.model.GameState;
 import no.uib.inf101.sem2.view.ConnectView;
 
@@ -15,8 +16,9 @@ public class GameController implements java.awt.event.MouseListener {
     private final ControllableModel model;
     private final ConnectView view;
     private Timer timer;
-
-
+    private final Song song = new Song();
+    
+    
     public GameController(ControllableModel model, ConnectView view){
         view.setFocusable(true);
         this.model = model;
@@ -24,6 +26,7 @@ public class GameController implements java.awt.event.MouseListener {
         view.addMouseListener(this);
         this.timer = new Timer(model.dropTimer(), this::clockTick);
         timer.start();
+        song.run(); 
 
 
     }

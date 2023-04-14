@@ -6,14 +6,14 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequencer;
 
 /**
- * Play the Tetris music. Sample usage:
+ * Play music. Sample usage:
  * <code>
- * TetrisSong music = new TetrisSong();
+ * Song music = new Song();
  * music.run(); 
  * </code>
  */
 public class Song implements Runnable {
-    private static final String TETRISMUSIC = "DancingQueen.mid";
+    private static final String TETRISMUSIC = "elvis.mid";
     private Sequencer sequencer;
 
     @Override
