@@ -10,8 +10,8 @@ public class DefaultColorTheme implements ColorTheme {
         Color color = switch(c) {
             case 'r' -> Color.RED;
             case 'y' -> Color.YELLOW;
-
             case '-' -> Color.WHITE;
+            
             default -> throw new IllegalArgumentException(
                 "No available color for '" + c + "'");
           };

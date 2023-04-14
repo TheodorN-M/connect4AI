@@ -2,6 +2,7 @@ package no.uib.inf101.sem2.controller;
 
 import no.uib.inf101.sem2.grid.GridDimension;
 import no.uib.inf101.sem2.model.GameState;
+import no.uib.inf101.sem2.model.piece.Turn;
 
 public interface ControllableModel {
     /**
@@ -33,4 +34,12 @@ public interface ControllableModel {
      * and sticks the tetromino otherwise
      */
     void clockTick();
+
+    /**
+     * Sets the current turn.<br> 
+     * <strong>Only</strong> for tests!<br>
+     *
+     * @param turn the turn to be set
+     */
+    void setTurn(Turn turn);
 }

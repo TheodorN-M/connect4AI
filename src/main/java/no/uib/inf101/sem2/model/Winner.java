@@ -34,16 +34,16 @@ public class Winner {
         }
         // Sjekke om noen har vunnet diagonalt
         char[][] DArray = board.getBoardAs2DArray();
-        for (int col = 0; col < board.cols()-4; col++) {
-            for (int row = 0; row < board.rows()-3; row++) {
+        for (int col = 0; col <= board.cols()-4; col++) { // 0 til og med 3 
+            for (int row = 0; row <= board.rows()-4; row++) { // 0 til og med 2
 
                 String s = diagRightWinner(DArray, row, col);
                 if (s != null) {
                     return s;
                 }
-                col += 4;
+                col += 3;
                 s = diagLeftWinner(DArray, row, col);
-                col -= 4;
+                col -= 3;
                 if (s != null){
                     return s;
                 }

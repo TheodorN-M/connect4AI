@@ -1,6 +1,5 @@
 package no.uib.inf101.sem2.model.piece;
 
-
 import no.uib.inf101.sem2.grid.CellPosition;
 
 public class Piece {
