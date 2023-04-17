@@ -6,16 +6,16 @@ public class Piece {
     private final char colorChar;
     private final CellPosition pos;
 
-    public Piece(char colorChar, CellPosition pos){
+    public Piece(char colorChar, CellPosition pos) {
         this.colorChar = colorChar;
         this.pos = pos;
     }
 
-    public char getColorCharacter(){
+    public char getColorCharacter() {
         return colorChar;
     }
 
-    public CellPosition getPos(){
+    public CellPosition getPos() {
         return pos;
     }
 }

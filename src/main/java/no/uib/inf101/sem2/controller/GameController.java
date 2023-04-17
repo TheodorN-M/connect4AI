@@ -10,65 +10,51 @@ import no.uib.inf101.sem2.midi.Song;
 import no.uib.inf101.sem2.model.GameState;
 import no.uib.inf101.sem2.view.ConnectView;
 
-
-
 public class GameController implements java.awt.event.MouseListener {
     private final ControllableModel model;
     private final ConnectView view;
     private Timer timer;
     private final Song song = new Song();
-    
-    
-    public GameController(ControllableModel model, ConnectView view){
+
+    public GameController(ControllableModel model, ConnectView view) {
         view.setFocusable(true);
         this.model = model;
         this.view = view;
         view.addMouseListener(this);
         this.timer = new Timer(model.dropTimer(), this::clockTick);
         timer.start();
-        song.run(); 
-
+        song.run();
 
     }
 
-    
-
-    public void clockTick(ActionEvent event){
-        if (model.getGameState() == GameState.ACTIVE_GAME){
+    public void clockTick(ActionEvent event) {
+        if (model.getGameState() == GameState.ACTIVE_GAME) {
             model.clockTick();
             view.repaint();
         }
     }
 
-
-
     @Override
     public void mouseClicked(MouseEvent e) {
     }
-    
-    private int getColFromCoordinate(int x){
+
+    private int getColFromCoordinate(int x) {
         return (x * model.getDimension().cols() / view.getWidth());
     }
-    
+
     @Override
     public void mousePressed(MouseEvent e) {
         model.placePiece(getColFromCoordinate(e.getX()));
         view.repaint();
     }
 
-
-
     @Override
     public void mouseReleased(MouseEvent e) {
     }
 
-
-
     @Override
     public void mouseEntered(MouseEvent e) {
     }
-
-
 
     @Override
     public void mouseExited(MouseEvent e) {

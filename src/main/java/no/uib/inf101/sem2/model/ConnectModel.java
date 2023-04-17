@@ -36,7 +36,7 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
     private boolean isLegalPos(Piece piece) {
 
         CellPosition pos = piece.getPos();
-        if (!(board.positionIsOnGrid(pos) && board.get(pos) == '-')) {
+        if ((!(board.positionIsOnGrid(pos)) || board.get(pos) != '-')) {
             return false;
         }
 

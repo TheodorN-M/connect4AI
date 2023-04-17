@@ -14,7 +14,6 @@ public class Main {
     ConnectView view = new ConnectView(model);
     new GameController(model, view);
 
-
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setTitle("Connect4 INF101");

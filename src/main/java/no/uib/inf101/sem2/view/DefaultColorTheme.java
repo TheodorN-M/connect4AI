@@ -7,18 +7,17 @@ public class DefaultColorTheme implements ColorTheme {
 
     @Override
     public Color getCellColor(Character c) {
-        Color color = switch(c) {
+        Color color = switch (c) {
             case 'r' -> Color.RED;
             case 'y' -> Color.YELLOW;
             case '-' -> Color.WHITE;
-            
-            default -> throw new IllegalArgumentException(
-                "No available color for '" + c + "'");
-          };
-          return color;
-        
-    }
 
+            default -> throw new IllegalArgumentException(
+                    "No available color for '" + c + "'");
+        };
+        return color;
+
+    }
 
     @Override
     public Color getBackgroundColor() {
@@ -29,7 +28,6 @@ public class DefaultColorTheme implements ColorTheme {
     public Font getFont() {
         return new Font("Comic Sans", Font.PLAIN, 50);
     }
-
 
     @Override
     public Color getFontColor() {
@@ -42,7 +40,7 @@ public class DefaultColorTheme implements ColorTheme {
     }
 
     @Override
-    public Font getTurnFont(){
+    public Font getTurnFont() {
         return new Font("Comic Sans", Font.PLAIN, 20);
     }
 

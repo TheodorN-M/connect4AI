@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sem2.grid.CellPosition;
@@ -16,10 +15,9 @@ import no.uib.inf101.sem2.grid.GridCell;
 import no.uib.inf101.sem2.model.piece.Turn;
 
 public class ModelTest {
-  
-  
+
   @Test
-  public void nextTurnTest(){
+  public void nextTurnTest() {
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
     // The placePiece method also makes it the next player's turn
@@ -29,7 +27,7 @@ public class ModelTest {
     assertEquals(Turn.YELLOW, model.getTurn());
 
   }
-    
+
   @Test
   public void placePieceTest() {
     ConnectBoard board = new ConnectBoard(6, 7);
@@ -68,7 +66,7 @@ public class ModelTest {
   }
 
   @Test
-  public void dropPiecesTest(){
+  public void dropPiecesTest() {
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
     model.setTurn(Turn.RED);
@@ -88,7 +86,7 @@ public class ModelTest {
   }
 
   @Test
-  public void dropPiecesMultipleTimesTest(){
+  public void dropPiecesMultipleTimesTest() {
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
     for (int col = 0; col < 5; col++) {
@@ -108,11 +106,11 @@ public class ModelTest {
   }
 
   @Test
-  public void dropPiecesOnTopOfOtherPiecesAndNotUnderBoardLimitTest(){
+  public void dropPiecesOnTopOfOtherPiecesAndNotUnderBoardLimitTest() {
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
     model.setTurn(Turn.RED);
-    
+
     board.set(new CellPosition(5, 3), 'r');
     for (int i = 2; i < 5; i++) {
       model.placePiece(i);
@@ -121,7 +119,6 @@ public class ModelTest {
     for (int i = 0; i < 20; i++) {
       board.dropPieces();
     }
-    
 
     List<GridCell<Character>> holes = new ArrayList<>();
     for (GridCell<Character> gridCell : model.getHolesOnBoard()) {
