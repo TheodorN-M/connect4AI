@@ -8,10 +8,10 @@ import no.uib.inf101.sem2.model.piece.Turn;
 import no.uib.inf101.sem2.controller.ControllableModel;
 
 public class ConnectModel implements ViewableConnectModel, ControllableModel {
-    private ConnectBoard board;
-    private static GameState gameState = GameState.ACTIVE_GAME;
     private static Turn turn = Turn.RED;
-    private static String won = "";
+    private final ConnectBoard board;
+    private GameState gameState = GameState.ACTIVE_GAME;
+    private String won = "";
 
     public ConnectModel(ConnectBoard board) {
         this.board = board;
@@ -79,18 +79,18 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
             Piece piece = new Piece('y', new CellPosition(0, col));
             if (turn == Turn.RED) {
                 piece = new Piece('r', new CellPosition(0, col));
-                nextTurn(piece);
+                setNextTurn(piece);
             }
 
             if (isLegalPos(piece)) {
                 board.set(new CellPosition(0, col), piece.getColorCharacter());
-                nextTurn(piece);
+                setNextTurn(piece);
             }
         }
 
     }
 
-    private void nextTurn(Piece piece) {
+    private void setNextTurn(Piece piece) {
         if (piece.getColorCharacter() == 'r') {
             turn = Turn.YELLOW;
         } else {

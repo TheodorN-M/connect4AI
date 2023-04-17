@@ -1,7 +1,7 @@
 package no.uib.inf101.sem2.model;
 
 public class Winner {
-    private ConnectBoard board;
+    private final ConnectBoard board;
 
     public Winner(ConnectBoard board) {
         this.board = board;
@@ -33,49 +33,49 @@ public class Winner {
         }
         // Sjekke om noen har vunnet diagonalt
         char[][] DArray = board.getBoardAs2DArray();
-        for (int col = 0; col <= board.cols() - 4; col++) { // 0 til og med 3
-            for (int row = 0; row <= board.rows() - 4; row++) { // 0 til og med 2
+        for (int col = 0; col <= board.cols() - 4; col++) { 
+            for (int row = 0; row <= board.rows() - 4; row++) { 
 
-                String s = diagRightWinner(DArray, row, col);
-                if (s != null) {
-                    return s;
+                char s = diagRightWinner(DArray, row, col);
+                if (s != 0) {
+                    return getWinner(s);
                 }
                 col += 3;
                 s = diagLeftWinner(DArray, row, col);
                 col -= 3;
-                if (s != null) {
-                    return s;
+                if (s != 0) {
+                    return getWinner(s);
                 }
             }
         }
         return null;
 
     }
-
-    private String diagRightWinner(char[][] board, int rowStart, int colStart) {
+    // 
+    private char diagRightWinner(char[][] board, int rowStart, int colStart) {
         char a0 = board[rowStart][colStart];
         char b1 = board[rowStart + 1][colStart + 1];
         char c2 = board[rowStart + 2][colStart + 2];
         char d3 = board[rowStart + 3][colStart + 3];
 
         if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-') {
-            return getWinner(a0);
+            return a0;
 
         }
-        return null;
+        return 0;
     }
 
-    private String diagLeftWinner(char[][] board, int rowStart, int colStart) {
+    private char diagLeftWinner(char[][] board, int rowStart, int colStart) {
         char a0 = board[rowStart][colStart];
         char b1 = board[rowStart + 1][colStart - 1];
         char c2 = board[rowStart + 2][colStart - 2];
         char d3 = board[rowStart + 3][colStart - 3];
 
         if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-') {
-            return getWinner(a0);
+            return a0;
 
         }
-        return null;
+        return 0;
     }
 
     /**

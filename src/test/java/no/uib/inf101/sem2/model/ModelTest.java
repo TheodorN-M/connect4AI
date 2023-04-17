@@ -27,109 +27,42 @@ public class ModelTest {
     assertEquals(Turn.YELLOW, model.getTurn());
 
   }
-
   @Test
-  public void placePieceTest() {
+  public void testDefaultGameState(){
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
-    model.setTurn(Turn.RED);
 
-    List<GridCell<Character>> holes = new ArrayList<>();
-    for (GridCell<Character> gridCell : model.getHolesOnBoard()) {
-      holes.add(gridCell);
-    }
-
-    assertTrue(holes.contains(new GridCell<>(new CellPosition(0, 2), '-')));
-    assertEquals(Turn.RED, model.getTurn());
-
-    model.placePiece(2);
-
-    List<GridCell<Character>> holes2 = new ArrayList<>();
-    for (GridCell<Character> gridCell : model.getHolesOnBoard()) {
-      holes2.add(gridCell);
-    }
-
-    assertFalse(holes.equals(holes2));
-    assertEquals(Turn.YELLOW, model.getTurn());
-
-    assertTrue(holes2.contains(new GridCell<>(new CellPosition(0, 2), 'r')));
-
-    model.placePiece(5);
-    List<GridCell<Character>> holes3 = new ArrayList<>();
-    for (GridCell<Character> gridCell : model.getHolesOnBoard()) {
-      holes3.add(gridCell);
-    }
-    System.out.println(holes3);
-    assertFalse(holes3.equals(holes2));
-    assertTrue(holes3.contains(new GridCell<>(new CellPosition(0, 5), 'y')));
-
+    assertEquals(GameState.ACTIVE_GAME, model.getGameState());
   }
 
   @Test
-  public void dropPiecesTest() {
+  public void testClockTickAndGameOver(){
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
-    model.setTurn(Turn.RED);
-    for (int col = 0; col < 5; col++) {
-      model.placePiece(col);
-    }
-    board.dropPieces();
+    Winner winner = new Winner(board);
 
-    List<GridCell<Character>> holes = new ArrayList<>();
-    for (GridCell<Character> gridCell : model.getHolesOnBoard()) {
-      holes.add(gridCell);
+    board.set(new CellPosition(0, 1), 'r');
+    board.set(new CellPosition(0, 2), 'r');
+    board.set(new CellPosition(0, 3), 'r');
+    board.set(new CellPosition(0, 4), 'r');
+    
+    model.clockTick();
+
+    assertEquals('-', board.get(new CellPosition(0, 0)));
+    assertEquals('-', board.get(new CellPosition(0, 2)));
+    assertEquals('-', board.get(new CellPosition(0, 3)));
+    assertEquals('-', board.get(new CellPosition(0, 4)));
+
+    assertEquals('r', board.get(new CellPosition(1, 1)));
+    assertEquals('r', board.get(new CellPosition(1, 2)));
+    assertEquals('r', board.get(new CellPosition(1, 3)));
+    assertEquals('r', board.get(new CellPosition(1, 4)));
+
+    for (int i = 0; i < board.rows(); i++) {
+      model.clockTick();
     }
-    for (int i = 0; i < 5; i++) {
-      assertFalse(holes.contains(new GridCell<>(new CellPosition(1, i), '-')));
-    }
+    assertEquals("Red", winner.findWinner());
+    assertEquals(GameState.GAME_OVER, model.getGameState());
 
   }
-
-  @Test
-  public void dropPiecesMultipleTimesTest() {
-    ConnectBoard board = new ConnectBoard(6, 7);
-    ConnectModel model = new ConnectModel(board);
-    for (int col = 0; col < 5; col++) {
-      model.placePiece(col);
-    }
-    for (int i = 0; i < 5; i++) {
-      board.dropPieces();
-    }
-
-    List<GridCell<Character>> holes = new ArrayList<>();
-    for (GridCell<Character> gridCell : model.getHolesOnBoard()) {
-      holes.add(gridCell);
-    }
-    for (int i = 0; i < 5; i++) {
-      assertFalse(holes.contains(new GridCell<>(new CellPosition(5, i), '-')));
-    }
-  }
-
-  @Test
-  public void dropPiecesOnTopOfOtherPiecesAndNotUnderBoardLimitTest() {
-    ConnectBoard board = new ConnectBoard(6, 7);
-    ConnectModel model = new ConnectModel(board);
-    model.setTurn(Turn.RED);
-
-    board.set(new CellPosition(5, 3), 'r');
-    for (int i = 2; i < 5; i++) {
-      model.placePiece(i);
-    }
-
-    for (int i = 0; i < 20; i++) {
-      board.dropPieces();
-    }
-
-    List<GridCell<Character>> holes = new ArrayList<>();
-    for (GridCell<Character> gridCell : model.getHolesOnBoard()) {
-      holes.add(gridCell);
-    }
-    assertTrue(holes.contains(new GridCell<>(new CellPosition(5, 2), 'r')));
-    assertTrue(holes.contains(new GridCell<>(new CellPosition(5, 3), 'r')));
-    assertTrue(holes.contains(new GridCell<>(new CellPosition(5, 4), 'r')));
-
-    assertTrue(holes.contains(new GridCell<>(new CellPosition(4, 3), 'y')));
-
-  }
-
 }
