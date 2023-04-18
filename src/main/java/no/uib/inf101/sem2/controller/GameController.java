@@ -46,7 +46,9 @@ public class GameController implements java.awt.event.MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (model.getTurn() == Turn.RED){
+        if ((model.getTurn() == Turn.RED && model.getGameState() == GameState.AI_ACTIVE) ||
+        model.getGameState() == GameState.ACTIVE_GAME){
+
             model.placePiece(getColFromCoordinate(e.getX()));
             view.repaint();
         }
