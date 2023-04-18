@@ -3,6 +3,7 @@ package no.uib.inf101.sem2.model;
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
 import no.uib.inf101.sem2.grid.GridDimension;
+import no.uib.inf101.sem2.model.ai.Ai;
 import no.uib.inf101.sem2.model.piece.Piece;
 import no.uib.inf101.sem2.model.piece.Turn;
 import no.uib.inf101.sem2.controller.ControllableModel;
@@ -70,9 +71,13 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
                 won = s;
                 setGameOver();
             }
+            if (gameState == GameState.AI_ACTIVE && turn == Turn.YELLOW){
+                ai.aiPlacePiece();
+            }
         }
     }
 
+    @Override
     public Turn getTurn() {
         return turn;
     }
@@ -96,13 +101,12 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
                 setNextTurn(piece);
             }
         }
-        if (gameState == GameState.AI_ACTIVE){
-            ai.aiPlacePiece();
-        }
+        
 
     }
 
-    void setNextTurn(Piece currentPiece) {
+    @Override
+    public void setNextTurn(Piece currentPiece) {
         if (currentPiece.getColorCharacter() == 'r') {
             turn = Turn.YELLOW;
         } else {

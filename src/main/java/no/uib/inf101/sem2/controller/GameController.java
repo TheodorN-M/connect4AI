@@ -7,8 +7,9 @@ import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 
 import no.uib.inf101.sem2.midi.Song;
-import no.uib.inf101.sem2.model.Ai;
 import no.uib.inf101.sem2.model.GameState;
+import no.uib.inf101.sem2.model.ai.Ai;
+import no.uib.inf101.sem2.model.piece.Turn;
 import no.uib.inf101.sem2.view.ConnectView;
 
 public class GameController implements java.awt.event.MouseListener {
@@ -45,11 +46,10 @@ public class GameController implements java.awt.event.MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        model.placePiece(getColFromCoordinate(e.getX()));
-        view.repaint();
-        // if(model.getGameState() == GameState.AI_ACTIVE){
-        //     Ai ai = new Ai(null, null)
-        // }
+        if (model.getTurn() == Turn.RED){
+            model.placePiece(getColFromCoordinate(e.getX()));
+            view.repaint();
+        }
     }
 
     @Override

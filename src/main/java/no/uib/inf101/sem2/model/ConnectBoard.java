@@ -48,6 +48,16 @@ public class ConnectBoard extends Grid<Character> {
         }
         return array;
     }
+    public char[][] getFlippedBoardAs2DArray() {
+        char[][] array = new char[cols()][rows()];
+        for (int row = 0; row < rows(); row++) {
+            for (int col = 0; col < cols(); col++) {
+                array[col][row] = this.get(new CellPosition(row, col));
+            }
+        }
+        return array;
+    }
+
 
     /**
      * The method drops all pieces on the board one spot down, if possible.

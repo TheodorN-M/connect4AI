@@ -2,6 +2,7 @@ package no.uib.inf101.sem2.controller;
 
 import no.uib.inf101.sem2.grid.GridDimension;
 import no.uib.inf101.sem2.model.GameState;
+import no.uib.inf101.sem2.model.piece.Piece;
 import no.uib.inf101.sem2.model.piece.Turn;
 
 public interface ControllableModel {
@@ -44,4 +45,8 @@ public interface ControllableModel {
      * @param turn the turn to be set
      */
     void setTurn(Turn turn);
+
+    Turn getTurn();
+
+    void setNextTurn(Piece piece);
 }
