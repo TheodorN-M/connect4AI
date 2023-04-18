@@ -90,19 +90,17 @@ public class WinnerTest {
   }
 
   @Test
-    public void biggerBoardTest(){
-        ConnectBoard board = new ConnectBoard(20, 20);
-        ConnectModel model = new ConnectModel(board);
-        Winner winner = new Winner(board);
+  public void biggerBoardTest() {
+    ConnectBoard board = new ConnectBoard(20, 20);
+    Winner winner = new Winner(board);
 
+    board.set(new CellPosition(14, 14), 'r');
+    board.set(new CellPosition(14, 15), 'r');
+    board.set(new CellPosition(14, 16), 'r');
+    board.set(new CellPosition(14, 17), 'r');
 
-        board.set(new CellPosition(14, 14), 'r');
-        board.set(new CellPosition(14, 15), 'r');
-        board.set(new CellPosition(14, 16), 'r');
-        board.set(new CellPosition(14, 17), 'r');
-        
-        assertFalse(board.positionIsOnGrid(new CellPosition(21, 21)));
-        assertEquals("Red", winner.findWinner());
+    assertFalse(board.positionIsOnGrid(new CellPosition(21, 21)));
+    assertEquals("Red", winner.findWinner());
 
-    }
+  }
 }

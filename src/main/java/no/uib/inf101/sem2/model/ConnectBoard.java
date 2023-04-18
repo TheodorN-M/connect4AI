@@ -1,5 +1,7 @@
 package no.uib.inf101.sem2.model;
 
+// import java.util.Objects;
+
 import no.uib.inf101.sem2.grid.*;
 
 public class ConnectBoard extends Grid<Character> {
@@ -67,5 +69,23 @@ public class ConnectBoard extends Grid<Character> {
         return dropping;
 
     }
+
+
+    // @Override
+    // public int hashCode(){
+    //     return Objects.hash(this);
+    // }
+
+    // @Override
+    // public boolean equals(Object obj) {
+    //     if (obj == this) {
+    //       return true;
+    //     }
+    //     if (!(obj instanceof Grid)) {
+    //       return false;
+    //     }
+    //     Grid other = (Grid) obj;
+    //     return this == other;
+    // }
 
 }

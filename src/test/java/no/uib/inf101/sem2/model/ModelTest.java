@@ -1,16 +1,10 @@
 package no.uib.inf101.sem2.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import no.uib.inf101.sem2.grid.CellPosition;
-import no.uib.inf101.sem2.grid.GridCell;
 
 import no.uib.inf101.sem2.model.piece.Turn;
 
@@ -27,8 +21,9 @@ public class ModelTest {
     assertEquals(Turn.YELLOW, model.getTurn());
 
   }
+
   @Test
-  public void testDefaultGameState(){
+  public void testDefaultGameState() {
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
 
@@ -36,7 +31,7 @@ public class ModelTest {
   }
 
   @Test
-  public void testClockTickAndGameOver(){
+  public void testClockTickAndGameOver() {
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board);
     Winner winner = new Winner(board);
@@ -45,7 +40,7 @@ public class ModelTest {
     board.set(new CellPosition(0, 2), 'r');
     board.set(new CellPosition(0, 3), 'r');
     board.set(new CellPosition(0, 4), 'r');
-    
+
     model.clockTick();
 
     assertEquals('-', board.get(new CellPosition(0, 0)));
