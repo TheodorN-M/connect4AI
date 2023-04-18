@@ -13,7 +13,7 @@ public class ModelTest {
   @Test
   public void nextTurnTest() {
     ConnectBoard board = new ConnectBoard(6, 7);
-    ConnectModel model = new ConnectModel(board);
+    ConnectModel model = new ConnectModel(board, GameState.ACTIVE_GAME);
     // The placePiece method also makes it the next player's turn
     // Red starts as standard
     model.setTurn(Turn.RED);
@@ -25,7 +25,7 @@ public class ModelTest {
   @Test
   public void testDefaultGameState() {
     ConnectBoard board = new ConnectBoard(6, 7);
-    ConnectModel model = new ConnectModel(board);
+    ConnectModel model = new ConnectModel(board, GameState.ACTIVE_GAME);
 
     assertEquals(GameState.ACTIVE_GAME, model.getGameState());
   }
@@ -33,7 +33,7 @@ public class ModelTest {
   @Test
   public void testClockTickAndGameOver() {
     ConnectBoard board = new ConnectBoard(6, 7);
-    ConnectModel model = new ConnectModel(board);
+    ConnectModel model = new ConnectModel(board, GameState.ACTIVE_GAME);
     Winner winner = new Winner(board);
 
     board.set(new CellPosition(0, 1), 'r');

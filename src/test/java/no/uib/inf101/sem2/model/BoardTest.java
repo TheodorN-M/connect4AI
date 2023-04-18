@@ -13,12 +13,13 @@ import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
 import no.uib.inf101.sem2.model.piece.Turn;
 
+
 public class BoardTest {
 
     @Test
     public void placePieceTest() {
         ConnectBoard board = new ConnectBoard(6, 7);
-        ConnectModel model = new ConnectModel(board);
+        ConnectModel model = new ConnectModel(board, GameState.ACTIVE_GAME);
         model.setTurn(Turn.RED);
 
         List<GridCell<Character>> holes = new ArrayList<>();
@@ -55,7 +56,7 @@ public class BoardTest {
     @Test
     public void dropPiecesTest() {
         ConnectBoard board = new ConnectBoard(6, 7);
-        ConnectModel model = new ConnectModel(board);
+        ConnectModel model = new ConnectModel(board, GameState.ACTIVE_GAME);
         model.setTurn(Turn.RED);
         for (int col = 0; col < 5; col++) {
             model.placePiece(col);
@@ -75,7 +76,7 @@ public class BoardTest {
     @Test
     public void dropPiecesMultipleTimesTest() {
         ConnectBoard board = new ConnectBoard(6, 7);
-        ConnectModel model = new ConnectModel(board);
+        ConnectModel model = new ConnectModel(board, GameState.ACTIVE_GAME);
         for (int col = 0; col < 5; col++) {
             model.placePiece(col);
         }
@@ -95,7 +96,7 @@ public class BoardTest {
     @Test
     public void dropPiecesOnTopOfOtherPiecesAndNotUnderBoardLimitTest() {
         ConnectBoard board = new ConnectBoard(6, 7);
-        ConnectModel model = new ConnectModel(board);
+        ConnectModel model = new ConnectModel(board, GameState.ACTIVE_GAME);
         model.setTurn(Turn.RED);
 
         board.set(new CellPosition(5, 3), 'r');

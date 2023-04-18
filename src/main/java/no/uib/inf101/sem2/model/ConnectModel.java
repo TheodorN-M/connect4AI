@@ -10,11 +10,20 @@ import no.uib.inf101.sem2.controller.ControllableModel;
 public class ConnectModel implements ViewableConnectModel, ControllableModel {
     private static Turn turn = Turn.RED;
     private final ConnectBoard board;
-    private GameState gameState = GameState.ACTIVE_GAME;
+    private GameState gameState;;
     private String won = "";
+    private final Ai ai;
 
-    public ConnectModel(ConnectBoard board) {
+    public ConnectModel(ConnectBoard board, GameState gamestate) {
         this.board = board;
+        this.gameState = gamestate;
+        if (gamestate == GameState.AI_ACTIVE){
+            this.ai = new Ai(board, this);
+        }
+        else{
+            this.ai = null;
+        }
+
     }
 
     @Override
@@ -55,7 +64,7 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
     @Override
     public void clockTick() {
         Winner winner = new Winner(board);
-        if (!board.dropPieces() && gameState == GameState.ACTIVE_GAME) {
+        if (!board.dropPieces() && (gameState == GameState.ACTIVE_GAME || gameState == GameState.AI_ACTIVE)) {
             String s = winner.findWinner();
             if (s != null) {
                 won = s;
@@ -75,7 +84,7 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
 
     @Override
     public void placePiece(int col) {
-        if (gameState == GameState.ACTIVE_GAME) {
+        if (gameState == GameState.ACTIVE_GAME || gameState == GameState.AI_ACTIVE) {
             Piece piece = new Piece('y', new CellPosition(0, col));
             if (turn == Turn.RED) {
                 piece = new Piece('r', new CellPosition(0, col));
@@ -87,11 +96,14 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
                 setNextTurn(piece);
             }
         }
+        if (gameState == GameState.AI_ACTIVE){
+            ai.aiPlacePiece();
+        }
 
     }
 
-    private void setNextTurn(Piece piece) {
-        if (piece.getColorCharacter() == 'r') {
+    void setNextTurn(Piece currentPiece) {
+        if (currentPiece.getColorCharacter() == 'r') {
             turn = Turn.YELLOW;
         } else {
             turn = Turn.RED;
