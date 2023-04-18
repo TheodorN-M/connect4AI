@@ -1,5 +1,7 @@
 package no.uib.inf101.sem2.model.ai;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import no.uib.inf101.sem2.grid.CellPosition;
@@ -37,13 +39,21 @@ public class Ai {
 
     private int findLucrativeSpot() {
         char[][] holes = board.getBoardAs2DArray();
-        char[][] holesFlipped = board.getFlippedBoardAs2DArray();
+        // char[][] holesFlipped = board.getFlippedBoardAs2DArray();
 
-        AiPlacement hei = findColForCol();
-        AiPlacement halla = findColForRow(holes);
+        AiPlacement vertical = findColForCol();
+        AiPlacement horizontal = findColForRow(holes);
+
+        AiPlacement hinderRedH = hinderRedHorizontally(holes);
+        AiPlacement hinderRedV = hinderRedVertically(holes);
 
         
-        return bestAiMove(hei, halla);
+        int col = bestAiMove(vertical, horizontal, hinderRedH, hinderRedV);
+        if (col != -1){
+            return col;
+        }
+        return rnd.nextInt(board.cols());
+
 
     }
 
@@ -67,7 +77,7 @@ public class Ai {
             }
             if (currentCol.contains("-yyy")) {
                 optimalCol = col;
-                score = 4;
+                score = 5;
                 intChanged = true;
             }
             if (intChanged) {
@@ -76,7 +86,7 @@ public class Ai {
                 }
             }
         }
-        return new AiPlacement(rnd.nextInt(board.cols()), score);
+        return null;
     }
 
     private AiPlacement findColForRow(char[][] array) {
@@ -91,7 +101,7 @@ public class Ai {
                 score = 3;
             }
             if (currentRowString.contains("-yyy")) {
-                score = 4;
+                score = 5;
             }
 
             for (int col = 0; col < board.cols() - 1; col++) {
@@ -106,16 +116,86 @@ public class Ai {
         return null;
     }
 
-    private int bestAiMove(AiPlacement one, AiPlacement two) {
-        if (two == null){
-            return one.col();
-        } 
+    private AiPlacement hinderRedHorizontally(char[][] array){
+        for (int row = 0; row < board.rows(); row++) {
+          char[] currentRow = array[row];
 
-        int optimalCol = two.col();
+            for (int col = 0; col < board.cols() - 3; col++) {
+                int countDashes = 0;
+                int countReds = 0;
+                char[] fourCols = {currentRow[col], currentRow[col+1], currentRow[col+2], currentRow[col+3]};
+                System.out.println(String.valueOf(fourCols));
+                for (char c : fourCols) {
+                    if(c == '-'){
+                        countDashes++;
+                    }
+                    if (c == 'r'){
+                        countReds++;
+                    }
+                }
+                if(countDashes == 1 && countReds == 3){
+                    return new AiPlacement(String.valueOf(fourCols).indexOf('-')+ col, 4);
+                }
 
-        if (one.score() > two.score()) {
-            optimalCol = one.col();
+                // if (col != 0 && currentRow[col] == 'r' && currentRow[col - 1] == '-' && 
+                //     currentRow[col + 1] == 'r' && currentRow[col + 2] == 'r') {
+
+                //     return new AiPlacement(col-1, 3);
+
+                // } else if (col != board.cols()-4 && currentRow[col] == 'r' && currentRow[col + 1] == 'r' && 
+                //            currentRow[col + 2] == 'r' && currentRow[col + 3] == '-') {
+
+                //     return new AiPlacement(col+3, 4);
+                    
+                // }
+            }
         }
-        return optimalCol;
+        return null;
+    }
+
+    private AiPlacement hinderRedVertically(char[][] array){
+
+        for (int col = 0; col < board.cols(); col++) {
+            String currentCol = String.valueOf(board.getCharArrayForCol(col));
+
+            if (currentCol.contains("-rrr")) {
+                System.out.println(currentCol);
+                return new AiPlacement(col, 4);
+
+            }
+        }
+        return null;
+    }
+
+    private int bestAiMove(AiPlacement one, AiPlacement two, AiPlacement three, AiPlacement four) {
+        List<AiPlacement> options = new ArrayList<>();
+        if (one != null){
+            options.add(one);
+        }
+        if (two != null){
+            options.add(two);
+        }
+        if (three != null){
+            options.add(three);
+        }
+        if(four != null){
+            options.add(four);
+        }
+
+
+
+            int highestScore = -1;
+            int optimalCol = -1;
+
+            for (int i = 0; i < options.size(); i++) {
+                AiPlacement temp = options.get(i);
+                
+                if (temp.score() > highestScore){
+                    highestScore = temp.score();
+                    optimalCol = temp.col();
+                }
+            }
+            return optimalCol;
+        
     }
 }
