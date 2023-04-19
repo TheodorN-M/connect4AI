@@ -44,11 +44,18 @@ public class Ai {
         AiPlacement vertical = findColForCol();
         AiPlacement horizontal = findColForRow(holes);
 
+        AiPlacement rigthDiag = findColForRightDiag(holes);
+        AiPlacement leftDiag = findColForLeftDiag(holes);
+
         AiPlacement hinderRedH = hinderRedHorizontally(holes);
         AiPlacement hinderRedV = hinderRedVertically(holes);
 
+        AiPlacement hinderRedRightDiag = hinderRedRightDiag(holes);
+        AiPlacement hinderRedLeftDiag = hinderRedLeftDiag(holes);
+
         
-        int col = bestAiMove(vertical, horizontal, hinderRedH, hinderRedV);
+        int col = bestAiMove(vertical, horizontal, hinderRedH, hinderRedV, 
+                            rigthDiag, leftDiag, hinderRedRightDiag, hinderRedLeftDiag);
         if (col != -1){
             return col;
         }
@@ -60,10 +67,10 @@ public class Ai {
     private AiPlacement findColForCol() {
         int optimalCol = -1;
         int score = 1;
+        boolean intChanged = false;
 
         for (int col = 0; col < board.cols(); col++) {
             String currentCol = String.valueOf(board.getCharArrayForCol(col));
-            boolean intChanged = false;
 
             if (currentCol.contains("-y")) {
                 optimalCol = col;
@@ -80,10 +87,10 @@ public class Ai {
                 score = 5;
                 intChanged = true;
             }
-            if (intChanged) {
-                if (board.get(new CellPosition(0, optimalCol)) == '-') {
-                    return new AiPlacement(optimalCol, score);
-                }
+        }
+        if (intChanged) {
+            if (board.get(new CellPosition(0, optimalCol)) == '-') {
+                return new AiPlacement(optimalCol, score);
             }
         }
         return null;
@@ -93,61 +100,61 @@ public class Ai {
         int optimalCol = -1;
         int score = 1;
         for (int row = 0; row < board.rows(); row++) {
-            String currentRowString = String.valueOf(array[row]);
+            char[] currentRow = array[row];
+
+
+            String currentRowString = String.valueOf(currentRow);
             if (currentRowString.contains("-y")) {
+                score = 2;
+            }
+            if (currentRowString.contains("y-")) {
                 score = 2;
             }
             if (currentRowString.contains("-yy")) {
                 score = 3;
             }
+            if (currentRowString.contains("yy-")) {
+                score = 3;
+            }
             if (currentRowString.contains("-yyy")) {
+                score = 5;
+            }
+            if (currentRowString.contains("yyy-")) {
                 score = 5;
             }
 
             for (int col = 0; col < board.cols() - 1; col++) {
-                if (col != 0 && array[row][col] == 'y' && array[row][col - 1] == '-') {
+                if (col != 0 && currentRow[col] == 'y' && currentRow[col - 1] == '-') {
                     return new AiPlacement(col-1, score);
-                } else if (array[row][col] == 'y' && array[row][col + 1] == '-') {
+                } else if (currentRow[col] == 'y' && currentRow[col + 1] == '-') {
                     return new AiPlacement(col+1, score);
                     
+                }
+            }
+            for (int col = 0; col < board.cols() - 3; col++) {
+
+                char[] fourCols = {currentRow[col], currentRow[col+1], currentRow[col+2], currentRow[col+3]};
+
+                if(threeInFour(fourCols, 'y')){
+                    return new AiPlacement(String.valueOf(fourCols).indexOf('-')+ col, 5);
                 }
             }
         }
         return null;
     }
+        
 
     private AiPlacement hinderRedHorizontally(char[][] array){
         for (int row = 0; row < board.rows(); row++) {
           char[] currentRow = array[row];
 
             for (int col = 0; col < board.cols() - 3; col++) {
-                int countDashes = 0;
-                int countReds = 0;
                 char[] fourCols = {currentRow[col], currentRow[col+1], currentRow[col+2], currentRow[col+3]};
-                System.out.println(String.valueOf(fourCols));
-                for (char c : fourCols) {
-                    if(c == '-'){
-                        countDashes++;
-                    }
-                    if (c == 'r'){
-                        countReds++;
-                    }
-                }
-                if(countDashes == 1 && countReds == 3){
+
+                if(threeInFour(fourCols, 'r')){
                     return new AiPlacement(String.valueOf(fourCols).indexOf('-')+ col, 4);
                 }
 
-                // if (col != 0 && currentRow[col] == 'r' && currentRow[col - 1] == '-' && 
-                //     currentRow[col + 1] == 'r' && currentRow[col + 2] == 'r') {
-
-                //     return new AiPlacement(col-1, 3);
-
-                // } else if (col != board.cols()-4 && currentRow[col] == 'r' && currentRow[col + 1] == 'r' && 
-                //            currentRow[col + 2] == 'r' && currentRow[col + 3] == '-') {
-
-                //     return new AiPlacement(col+3, 4);
-                    
-                // }
             }
         }
         return null;
@@ -159,15 +166,155 @@ public class Ai {
             String currentCol = String.valueOf(board.getCharArrayForCol(col));
 
             if (currentCol.contains("-rrr")) {
-                System.out.println(currentCol);
                 return new AiPlacement(col, 4);
-
             }
         }
         return null;
     }
 
-    private int bestAiMove(AiPlacement one, AiPlacement two, AiPlacement three, AiPlacement four) {
+    
+    private AiPlacement findColForLeftDiag(char[][] array){
+        for (int row = 0; row < board.rows()-4; row++) {
+            for (int col = 3; col < board.cols(); col++) {
+                
+                int colToReturn = -1;
+
+                char a0 = array[row][col];
+                char b1 = array[row + 1][col - 1];
+                char c2 = array[row + 2][col - 2];
+                char d3 = array[row + 3][col - 3];
+                char e4 = '-';
+
+                
+                if (row == board.rows()-5){
+                    e4 = array[row + 4][col - 3];
+                    
+                } 
+                else if (row != 0){
+                    e4 = array[row - 1][col + 1];
+                    
+                }
+                char[] sequence = {d3, c2, b1, a0};
+                
+                
+                if (threeInFour(sequence, 'y')){
+                    colToReturn = String.valueOf(sequence).indexOf('-') + col;
+
+                    if (e4 != '-'){
+                        return new AiPlacement(colToReturn, 5);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    private AiPlacement findColForRightDiag(char[][] array){
+        for (int row = 0; row < board.rows()-4; row++) {
+            for (int col = 0; col < board.cols()-4; col++) {
+                int colToReturn = -1;
+
+                
+                char a0 = array[row][col];
+                char b1 = array[row + 1][col + 1];
+                char c2 = array[row + 2][col + 2];
+                char d3 = array[row + 3][col + 3];
+                char e4 = '-';
+
+                char[] sequence = {a0, b1, c2, d3};
+
+                
+                if (row == board.rows()-5){
+                    e4 = array[row + 4][col + 3];
+
+                } else if (row != 0){
+                    e4 = array[row - 1][col - 1];
+
+                }
+                
+
+                if (threeInFour(sequence, 'y')){
+                    colToReturn = String.valueOf(sequence).indexOf('-') + col;
+                    if (e4 != '-'){
+                        return new AiPlacement(colToReturn, 5);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private AiPlacement hinderRedLeftDiag(char[][] array){
+        for (int row = 0; row < board.rows()-4; row++) {
+            for (int col = 3; col < board.cols(); col++) {
+                
+                int colToReturn = -1;
+                char a0 = array[row][col];
+                char b1 = array[row + 1][col - 1];
+                char c2 = array[row + 2][col - 2];
+                char d3 = array[row + 3][col - 3];
+                char e4 = '-';
+                
+                char[] sequence = {d3, c2, b1, a0};
+
+                if (row == board.rows()-5){
+                    e4 = array[row + 4][col - 3];
+
+                    
+                } 
+
+                else if (row != 0){
+                    e4 = array[row - 1][col + 1];
+
+                    
+                }
+               
+                
+                if (threeInFour(sequence, 'r')){
+                    colToReturn = String.valueOf(sequence).indexOf('-') + col;
+                    if (e4 != '-'){
+                        return new AiPlacement(colToReturn, 4);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private AiPlacement hinderRedRightDiag(char[][] array){
+        for (int row = 0; row < board.rows()-4; row++) {
+            for (int col = 0; col < board.cols()-4; col++) {
+                int colToReturn = -1;
+                
+                char a0 = array[row][col];
+                char b1 = array[row + 1][col + 1];
+                char c2 = array[row + 2][col + 2];
+                char d3 = array[row + 3][col + 3];
+                char e4 = '-';
+                char[] sequence = {a0, b1, c2, d3};
+
+                
+                if (row == board.rows()-5){
+                    e4 = array[row + 4][col + 3];
+
+                } else if (row != 0){
+                    e4 = array[row - 1][col - 1];
+
+                }
+
+                if (threeInFour(sequence, 'r')){
+                    colToReturn = String.valueOf(sequence).indexOf('-') + col;
+                    if (e4 != '-'){
+                        return new AiPlacement(colToReturn, 4);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    private int bestAiMove(AiPlacement one, AiPlacement two, AiPlacement three, AiPlacement four, AiPlacement five, AiPlacement six, AiPlacement seven, AiPlacement eight) {
         List<AiPlacement> options = new ArrayList<>();
         if (one != null){
             options.add(one);
@@ -180,6 +327,18 @@ public class Ai {
         }
         if(four != null){
             options.add(four);
+        }
+        if(five != null){
+            options.add(five);
+        }
+        if(six != null){
+            options.add(six);
+        }
+        if(seven != null){
+            options.add(six);
+        }
+        if(eight != null){
+            options.add(six);
         }
 
 
@@ -197,5 +356,23 @@ public class Ai {
             }
             return optimalCol;
         
+    }
+
+    private boolean threeInFour(char [] sequence, char character){
+        int countDashes = 0;
+        int countChars = 0;
+
+        for (char c : sequence) {
+            if(c == '-'){
+                countDashes++;
+            }
+            if (c == character){
+                countChars++;
+            }
+        }
+        if (countDashes == 1 && countChars == 3){
+            return true;
+        }
+        return false;
     }
 }
