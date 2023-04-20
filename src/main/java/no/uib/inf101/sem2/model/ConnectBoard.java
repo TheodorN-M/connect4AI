@@ -49,7 +49,6 @@ public class ConnectBoard extends Grid<Character> {
         return array;
     }
 
-
     /**
      * The method drops all pieces on the board one spot down, if possible.
      * 
@@ -70,31 +69,39 @@ public class ConnectBoard extends Grid<Character> {
         return dropping;
 
     }
-    public boolean countCharsInFour(char [] sequence, char character, int count){
+
+    /**
+     * Counts the amount of a given character and empty spaces in a sequence of four
+     * 
+     * @param sequence  four characters in a row
+     * @param character the character to count
+     * @param count     the wished amount of characters
+     * @return true if the amount of characters in the sequence equals the
+     *         count-parameter and the rest are empty spaces, false otherwise
+     */
+    public boolean countCharsInFour(char[] sequence, char character, int count) {
         int countDashes = 0;
         int countChars = 0;
-        int dashes = -(count-4);
+        int dashes = -(count - 4);
 
         for (char c : sequence) {
-            if(c == '-'){
+            if (c == '-') {
                 countDashes++;
             }
-            if (c == character){
+            if (c == character) {
                 countChars++;
             }
         }
-        if (countDashes == dashes && countChars == count){
+        if (countDashes == dashes && countChars == count) {
             return true;
         }
         return false;
     }
 
-    public void clear(){
+    public void clear() {
         for (GridCell<Character> gridCell : this) {
             set(gridCell.pos(), '-');
         }
     }
-
-
 
 }

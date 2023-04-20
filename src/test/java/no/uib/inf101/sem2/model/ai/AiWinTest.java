@@ -11,16 +11,19 @@ import no.uib.inf101.sem2.model.GameState;
 
 
 public class AiWinTest {
+
     
     @Test
     public void findOptimalColForAiCol(){
         ConnectBoard board = new ConnectBoard(6, 7);
         ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE);
         Ai ai = model.getAi();
+        int bottomRow = board.rows()-1;
 
-        board.set(new CellPosition(board.rows()-1, 3), 'y');
-        board.set(new CellPosition(board.rows()-2, 3), 'y');
-        board.set(new CellPosition(board.rows()-3, 3), 'y');
+
+        board.set(new CellPosition(bottomRow, 3), 'y');
+        board.set(new CellPosition(bottomRow-1, 3), 'y');
+        board.set(new CellPosition(bottomRow-2, 3), 'y');
 
         int expectedCol = 3;
 
@@ -32,10 +35,13 @@ public class AiWinTest {
         ConnectBoard board = new ConnectBoard(6, 7);
         ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE);
         Ai ai = model.getAi();
+        int bottomRow = board.rows()-1;
 
-        board.set(new CellPosition(board.rows()-1, 0), 'y');
-        board.set(new CellPosition(board.rows()-1, 1), 'y');
-        board.set(new CellPosition(board.rows()-1, 2), 'y');
+
+
+        board.set(new CellPosition(bottomRow, 0), 'y');
+        board.set(new CellPosition(bottomRow, 1), 'y');
+        board.set(new CellPosition(bottomRow, 2), 'y');
 
         int expectedCol = 3;
 
@@ -43,14 +49,64 @@ public class AiWinTest {
 
         board.clear();
 
-        board.set(new CellPosition(board.rows()-1, 0), 'y');
-        board.set(new CellPosition(board.rows()-1, 1), 'y');
-        board.set(new CellPosition(board.rows()-1, 3), 'y');
+        board.set(new CellPosition(bottomRow, 0), 'y');
+        board.set(new CellPosition(bottomRow, 1), 'y');
+        board.set(new CellPosition(bottomRow, 3), 'y');
 
         expectedCol = 2;
 
         assertEquals(expectedCol, ai.findLucrativeSpot());
 
+    }
+
+    @Test
+    public void advancedRowPlacementTest(){
+        ConnectBoard board = new ConnectBoard(6, 7);
+        ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE);
+        Ai ai = model.getAi();
+        int bottomRow = board.rows()-1;
+
+        board.set(new CellPosition(bottomRow, 1), 'y');
+        board.set(new CellPosition(bottomRow, 2), 'y');
+
+        int expectedCol = 3;
+
+        assertEquals(expectedCol, ai.findLucrativeSpot());
+    }
+
+    @Test
+    public void advancedRowPlacementTest2(){
+        ConnectBoard board = new ConnectBoard(6, 7);
+        ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE);
+        Ai ai = model.getAi();
+        int bottomRow = board.rows()-1;
+
+        board.set(new CellPosition(bottomRow-1, 2), 'y');
+        board.set(new CellPosition(bottomRow-1, 3), 'y');
+
+        board.set(new CellPosition(bottomRow, 1), 'r');
+        board.set(new CellPosition(bottomRow, 4), 'r');
+        board.set(new CellPosition(bottomRow, 5), 'r');
+
+
+        int expectedCol = 4;
+
+        assertEquals(expectedCol, ai.findLucrativeSpot());
+    }
+    
+    @Test
+    public void advancedRowPlacementTest3(){
+        ConnectBoard board = new ConnectBoard(6, 7);
+        ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE);
+        Ai ai = model.getAi();
+        int bottomRow = board.rows()-1;
+
+        board.set(new CellPosition(bottomRow, 1), 'y');
+        board.set(new CellPosition(bottomRow, 3), 'y');
+
+        int expectedCol = 2;
+
+        assertEquals(expectedCol, ai.findLucrativeSpot());
     }
 
     @Test
@@ -83,12 +139,13 @@ public class AiWinTest {
 
         board.clear();
 
-        board.set(new CellPosition(4, 1), 'y');
-        board.set(new CellPosition(2, 3), 'y');
-        board.set(new CellPosition(1, 4), 'y');
-        board.set(new CellPosition(4, 2), 'r');
+        board.set(new CellPosition(5, 2), 'y');
+        //                             4,      3
+        board.set(new CellPosition(3, 4), 'y');
+        board.set(new CellPosition(2, 5), 'y');
+        board.set(new CellPosition(5, 3), 'r');
 
-        expectedCol = 2;
+        expectedCol = 3;
 
         assertEquals(expectedCol, ai.findLucrativeSpot());
 

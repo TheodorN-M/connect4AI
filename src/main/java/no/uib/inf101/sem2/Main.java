@@ -12,6 +12,7 @@ public class Main {
     ConnectBoard board = new ConnectBoard(6, 7);
     ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE); // GameState.ACTIVE_GAME
     ConnectView view = new ConnectView(model);
+    
 
     new GameController(model, view);
 
