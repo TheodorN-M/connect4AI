@@ -70,10 +70,10 @@ public class ConnectBoard extends Grid<Character> {
         return dropping;
 
     }
-    public boolean threeOrFourInFour(char [] sequence, char character, int threeOrFour){
+    public boolean countCharsInFour(char [] sequence, char character, int count){
         int countDashes = 0;
         int countChars = 0;
-        int dashes = -(threeOrFour-4);
+        int dashes = -(count-4);
 
         for (char c : sequence) {
             if(c == '-'){
@@ -83,7 +83,7 @@ public class ConnectBoard extends Grid<Character> {
                 countChars++;
             }
         }
-        if (countDashes == dashes && countChars == threeOrFour){
+        if (countDashes == dashes && countChars == count){
             return true;
         }
         return false;

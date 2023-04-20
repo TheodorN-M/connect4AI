@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 
 import no.uib.inf101.sem2.midi.Song;
 import no.uib.inf101.sem2.model.GameState;
-import no.uib.inf101.sem2.model.ai.Ai;
 import no.uib.inf101.sem2.model.piece.Turn;
 import no.uib.inf101.sem2.view.ConnectView;
 

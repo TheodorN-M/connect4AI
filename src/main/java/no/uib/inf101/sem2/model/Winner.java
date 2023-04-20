@@ -60,7 +60,7 @@ public class Winner {
 
         char[] sequence = {a0, b1, c2, d3};
 
-        if (a0 != '-' && board.threeOrFourInFour(sequence, a0, 4)) {
+        if (a0 != '-' && board.countCharsInFour(sequence, a0, 4)) {
             return a0;
         }
         return 0;
@@ -74,7 +74,7 @@ public class Winner {
 
         char[] sequence = {a0, b1, c2, d3};
 
-        if (a0 != '-' && board.threeOrFourInFour(sequence, a0, 4)) {
+        if (a0 != '-' && board.countCharsInFour(sequence, a0, 4)) {
             return a0;
 
         }
