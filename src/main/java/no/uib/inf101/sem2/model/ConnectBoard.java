@@ -70,6 +70,24 @@ public class ConnectBoard extends Grid<Character> {
         return dropping;
 
     }
+    public boolean threeOrFourInFour(char [] sequence, char character, int threeOrFour){
+        int countDashes = 0;
+        int countChars = 0;
+        int dashes = -(threeOrFour-4);
+
+        for (char c : sequence) {
+            if(c == '-'){
+                countDashes++;
+            }
+            if (c == character){
+                countChars++;
+            }
+        }
+        if (countDashes == dashes && countChars == threeOrFour){
+            return true;
+        }
+        return false;
+    }
 
     public void clear(){
         for (GridCell<Character> gridCell : this) {

@@ -130,7 +130,7 @@ public class Ai {
 
                 char[] fourCols = {currentRow[col], currentRow[col+1], currentRow[col+2], currentRow[col+3]};
 
-                if(threeInFour(fourCols, 'y')){
+                if(board.threeOrFourInFour(fourCols, 'y', 3)){
                     return new AiPlacement(String.valueOf(fourCols).indexOf('-')+ col, 5);
                 }
             }
@@ -146,7 +146,7 @@ public class Ai {
             for (int col = 0; col < board.cols() - 3; col++) {
                 char[] fourCols = {currentRow[col], currentRow[col+1], currentRow[col+2], currentRow[col+3]};
 
-                if(threeInFour(fourCols, 'r')){
+                if(board.threeOrFourInFour(fourCols, 'r', 3)){
                     return new AiPlacement(String.valueOf(fourCols).indexOf('-')+ col, 4);
                 }
 
@@ -182,7 +182,7 @@ public class Ai {
 
                 char[] sequence = {a0, b1, c2, d3};
 
-                if (threeInFour(sequence, yOrR)){
+                if (board.threeOrFourInFour(sequence, yOrR, 3)){
 
                     int sequenceIndex = String.valueOf(sequence).indexOf('-');
                     colToReturn = sequenceIndex + col;
@@ -215,7 +215,7 @@ public class Ai {
 
                 char[] sequence = {a0, b1, c2, d3};
                 
-                if (threeInFour(sequence, yOrR)){
+                if (board.threeOrFourInFour(sequence, yOrR, 3)){
                     int sequenceIndex = String.valueOf(sequence).indexOf('-');
                     colToReturn = sequenceIndex + col;
                     e4 = array[row + sequenceIndex+1][colToReturn];
@@ -275,21 +275,4 @@ public class Ai {
         
     }
 
-    private boolean threeInFour(char [] sequence, char character){
-        int countDashes = 0;
-        int countChars = 0;
-
-        for (char c : sequence) {
-            if(c == '-'){
-                countDashes++;
-            }
-            if (c == character){
-                countChars++;
-            }
-        }
-        if (countDashes == 1 && countChars == 3){
-            return true;
-        }
-        return false;
-    }
 }

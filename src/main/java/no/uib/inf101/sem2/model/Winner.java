@@ -52,26 +52,29 @@ public class Winner {
 
     }
     // 
-    private char diagRightWinner(char[][] board, int rowStart, int colStart) {
-        char a0 = board[rowStart][colStart];
-        char b1 = board[rowStart + 1][colStart + 1];
-        char c2 = board[rowStart + 2][colStart + 2];
-        char d3 = board[rowStart + 3][colStart + 3];
+    private char diagRightWinner(char[][] array, int rowStart, int colStart) {
+        char a0 = array[rowStart][colStart];
+        char b1 = array[rowStart + 1][colStart + 1];
+        char c2 = array[rowStart + 2][colStart + 2];
+        char d3 = array[rowStart + 3][colStart + 3];
 
-        if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-') {
+        char[] sequence = {a0, b1, c2, d3};
+
+        if (a0 != '-' && board.threeOrFourInFour(sequence, a0, 4)) {
             return a0;
-
         }
         return 0;
     }
 
-    private char diagLeftWinner(char[][] board, int rowStart, int colStart) {
-        char a0 = board[rowStart][colStart];
-        char b1 = board[rowStart + 1][colStart - 1];
-        char c2 = board[rowStart + 2][colStart - 2];
-        char d3 = board[rowStart + 3][colStart - 3];
+    private char diagLeftWinner(char[][] array, int rowStart, int colStart) {
+        char a0 = array[rowStart][colStart];
+        char b1 = array[rowStart + 1][colStart - 1];
+        char c2 = array[rowStart + 2][colStart - 2];
+        char d3 = array[rowStart + 3][colStart - 3];
 
-        if (a0 == b1 && c2 == d3 && a0 == c2 && a0 != '-') {
+        char[] sequence = {a0, b1, c2, d3};
+
+        if (a0 != '-' && board.threeOrFourInFour(sequence, a0, 4)) {
             return a0;
 
         }
