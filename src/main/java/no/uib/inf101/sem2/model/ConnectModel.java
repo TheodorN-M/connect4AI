@@ -130,4 +130,9 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
         ConnectModel.turn = turn;
     }
 
+    @Override
+    public Ai getAi(){
+        return this.ai;
+    }
+
 }

@@ -80,6 +80,12 @@ public class ConnectBoard extends Grid<Character> {
 
     }
 
+    public void clear(){
+        for (GridCell<Character> gridCell : this) {
+            set(gridCell.pos(), '-');
+        }
+    }
+
 
     // @Override
     // public int hashCode(){

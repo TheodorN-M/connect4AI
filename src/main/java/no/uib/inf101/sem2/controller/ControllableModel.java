@@ -2,6 +2,7 @@ package no.uib.inf101.sem2.controller;
 
 import no.uib.inf101.sem2.grid.GridDimension;
 import no.uib.inf101.sem2.model.GameState;
+import no.uib.inf101.sem2.model.ai.Ai;
 import no.uib.inf101.sem2.model.piece.Piece;
 import no.uib.inf101.sem2.model.piece.Turn;
 
@@ -49,4 +50,11 @@ public interface ControllableModel {
     Turn getTurn();
 
     void setNextTurn(Piece piece);
+
+    /**
+     * <strong>Only</strong> for tests!<br>
+     * 
+     * @return the Ai bot
+     */
+    Ai getAi();
 }
