@@ -7,8 +7,6 @@ import java.util.Random;
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.model.ConnectBoard;
 import no.uib.inf101.sem2.model.ConnectModel;
-import no.uib.inf101.sem2.model.piece.Piece;
-import no.uib.inf101.sem2.model.piece.Turn;
 
 public class Ai {
     ConnectBoard board;
@@ -30,39 +28,36 @@ public class Ai {
 
         model.placePiece(findLucrativeSpot());
 
-        // board.set(new CellPosition(0, rnd.nextInt(board.cols())), 'y');
-            
-        // model.setNextTurn(new Piece('y', pos));
-
 
     }
 
     public int findLucrativeSpot() {
         char[][] holes = board.getBoardAs2DArray();
-        // char[][] holesFlipped = board.getFlippedBoardAs2DArray();
 
         AiPlacement vertical = findColForCol();
         AiPlacement horizontal = findColForRow(holes);
 
-        AiPlacement downDIag = findColForDownDiag(holes);
-        AiPlacement upDiag = findColForUpDiag(holes);
+        AiPlacement downDiag = findColForDownDiag(holes, 'y');
+        AiPlacement hinderRedDownDiag = findColForDownDiag(holes, 'r');
+
+        AiPlacement upDiag = findColForUpDiag(holes, 'y');
+        AiPlacement hinderRedUpDiag = findColForUpDiag(holes, 'r');
+
 
         AiPlacement hinderRedH = hinderRedHorizontally(holes);
         AiPlacement hinderRedV = hinderRedVertically(holes);
 
-        AiPlacement hinderRedDownDiag = hinderRedDownDiag(holes);
-        AiPlacement hinderRedUpDiag = hinderRedUpDiag(holes);
 
         
         int col = bestAiMove(vertical, horizontal, hinderRedH, hinderRedV, 
-                            downDIag, upDiag, hinderRedDownDiag, hinderRedUpDiag);
+                            downDiag, upDiag, hinderRedDownDiag, hinderRedUpDiag);
 
         if (col != -1){
             return col;
         }
         return rnd.nextInt(board.cols());
 
-        // return downDIag.col();
+
 
     }
 
@@ -92,15 +87,12 @@ public class Ai {
             }
         }
         if (intChanged) {
-            // if (board.get(new CellPosition(0, optimalCol)) == '-') {
                 return new AiPlacement(optimalCol, score);
-            // }
         }
         return null;
     }
 
     private AiPlacement findColForRow(char[][] array) {
-        int optimalCol = -1;
         int score = 1;
         for (int row = 0; row < board.rows(); row++) {
             char[] currentRow = array[row];
@@ -176,7 +168,7 @@ public class Ai {
     }
 
     
-    private AiPlacement findColForUpDiag(char[][] array){
+    private AiPlacement findColForUpDiag(char[][] array, char yOrR){
         for (int row = 3; row < board.rows(); row++) {
             for (int col = 0; col <= board.cols()-4; col++) {
                 
@@ -190,72 +182,17 @@ public class Ai {
 
                 char[] sequence = {a0, b1, c2, d3};
 
-                if (threeInFour(sequence, 'y')){
+                if (threeInFour(sequence, yOrR)){
 
                     int sequenceIndex = String.valueOf(sequence).indexOf('-');
                     colToReturn = sequenceIndex + col;
 
                     e4 = array[row - sequenceIndex+1][colToReturn];
 
-                    if (e4 != '-'){
+                    if (e4 != '-' && yOrR == 'y'){
                         return new AiPlacement(colToReturn, 5);
                     }
-                }
-            }
-        }
-        return null;
-    }
-    
-    private AiPlacement findColForDownDiag(char[][] array){
-        for (int row = 0; row <= board.rows()-4; row++) {
-            for (int col = 0; col <= board.cols()-4; col++) {
-                int colToReturn = -1;
-
-                
-                char a0 = array[row][col];
-                char b1 = array[row + 1][col + 1];
-                char c2 = array[row + 2][col + 2];
-                char d3 = array[row + 3][col + 3];
-                char e4 = '-';
-
-                char[] sequence = {a0, b1, c2, d3};
-                
-                if (threeInFour(sequence, 'y')){
-                    int sequenceIndex = String.valueOf(sequence).indexOf('-');
-                    colToReturn = sequenceIndex + col;
-                    e4 = array[row + sequenceIndex+1][colToReturn];
-
-                    if (e4 != '-'){
-                        return new AiPlacement(colToReturn, 5);
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private AiPlacement hinderRedUpDiag(char[][] array){
-        for (int row = 3; row < board.rows(); row++) {
-            for (int col = 0; col <= board.cols()-4; col++) {
-                
-                int colToReturn = -1;
-
-                char a0 = array[row][col];
-                char b1 = array[row - 1][col + 1];
-                char c2 = array[row - 2][col + 2];
-                char d3 = array[row - 3][col + 3];
-                char e4 = '-';
-
-                char[] sequence = {a0, b1, c2, d3};
-
-                if (threeInFour(sequence, 'r')){
-
-                    int sequenceIndex = String.valueOf(sequence).indexOf('-');
-                    colToReturn = sequenceIndex + col;
-
-                    e4 = array[row - sequenceIndex+1][colToReturn];
-
-                    if (e4 != '-'){
+                    if (e4 != '-' && yOrR == 'r'){
                         return new AiPlacement(colToReturn, 4);
                     }
                 }
@@ -263,8 +200,8 @@ public class Ai {
         }
         return null;
     }
-
-    private AiPlacement hinderRedDownDiag(char[][] array){
+    
+    private AiPlacement findColForDownDiag(char[][] array, char yOrR){
         for (int row = 0; row <= board.rows()-4; row++) {
             for (int col = 0; col <= board.cols()-4; col++) {
                 int colToReturn = -1;
@@ -278,12 +215,15 @@ public class Ai {
 
                 char[] sequence = {a0, b1, c2, d3};
                 
-                if (threeInFour(sequence, 'r')){
+                if (threeInFour(sequence, yOrR)){
                     int sequenceIndex = String.valueOf(sequence).indexOf('-');
                     colToReturn = sequenceIndex + col;
                     e4 = array[row + sequenceIndex+1][colToReturn];
 
-                    if (e4 != '-'){
+                    if (e4 != '-' && yOrR == 'y'){
+                        return new AiPlacement(colToReturn, 5);
+                    }
+                    if (e4 != '-' && yOrR == 'r'){
                         return new AiPlacement(colToReturn, 4);
                     }
                 }
