@@ -9,8 +9,7 @@ import no.uib.inf101.sem2.model.piece.Turn;
 public interface ControllableModel {
     /**
      * 
-     * Returns a boolean value that represents wether the Tetromino was moved
-     * successfully
+     * Places a piece in the board in the given parameter col
      * 
      * @param col an integer representing the column to place a piece
      */
@@ -20,7 +19,7 @@ public interface ControllableModel {
     GridDimension getDimension();
 
     /**
-     * Returns the current GameState, {@code ACTIVE_GAME} or {@code GAME_OVER}
+     * Returns the current GameState, {@code ACTIVE_GAME}, {@code GAME_OVER} or {@code AI_ACTIVE}
      * 
      * @return a Gamestate-Object
      */
@@ -34,8 +33,9 @@ public interface ControllableModel {
     int dropTimer();
 
     /**
-     * Moves the tetromino for each tick of the clock, if the position is legal
-     * and sticks the tetromino otherwise
+     * Calls upon the method dropPieces to drop all pieces not yet 
+     * 
+     * @see no.uib.inf101.sem2.model.ConnectBoard#dropPieces()
      */
     void clockTick();
 
@@ -47,14 +47,24 @@ public interface ControllableModel {
      */
     void setTurn(Turn turn);
 
+    /**
+     * Gets whos turn it is currently
+     * 
+     * @return a Turn-Object, {@code RED} or {@code YELLOW}
+     */
     Turn getTurn();
 
+    /**
+     * Sets the turn to the other player
+     * 
+     * @param piece the previous' players piece object
+     */
     void setNextTurn(Piece piece);
 
     /**
      * <strong>Only</strong> for tests!<br>
      * 
-     * @return the Ai bot
+     * @return the Ai bot object
      */
     Ai getAi();
 }

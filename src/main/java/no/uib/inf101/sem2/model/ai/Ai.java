@@ -4,24 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.model.ConnectBoard;
 import no.uib.inf101.sem2.model.ConnectModel;
 
 public class Ai {
-    ConnectBoard board;
-    ConnectModel model;
-    Random rnd = new Random();
-    int bottomRow;
-    char empty = '-';
+    private final ConnectBoard board;
+    private final ConnectModel model;
+    private final Random rnd = new Random();
+    private final int bottomRow;
+    private final char empty = '-';
 
     public Ai(ConnectBoard board, ConnectModel model) {
         this.model = model;
         this.board = board;
-        this.bottomRow = board.rows()-1;
+        this.bottomRow = board.rows() - 1;
     }
 
+    /**
+     * The Ai finds the most optimal column for it's game, and places its piece
+     * there
+     */
     public void aiPlacePiece() {
 
         int col = findLucrativeSpot();
@@ -36,6 +39,13 @@ public class Ai {
 
     }
 
+    /**
+     * Helper function that uses algorithms to find the most optimal column to place
+     * a piece.
+     * Declared {@code public} for tests
+     * 
+     * @return an integer representing the most optimal column
+     */
     public int findLucrativeSpot() {
         char[][] holes = board.getBoardAs2DArray();
 
@@ -57,7 +67,6 @@ public class Ai {
         if (col != -1) {
             return col;
         }
-        System.out.println("** Random column chosen ** \n");
         return rnd.nextInt(board.cols());
 
     }
@@ -65,7 +74,6 @@ public class Ai {
     private AiPlacement findColForCol() {
         int optimalCol = -1;
         int score = 1;
-
 
         for (int col = 0; col < board.cols(); col++) {
             String currentCol = String.valueOf(board.getCharArrayForCol(col));
@@ -80,20 +88,19 @@ public class Ai {
                 score = 3;
 
             } else if (currentCol.contains("---y")) {
-                if (score != 3){
+                if (score != 3) {
                     optimalCol = col;
                     score = 1;
                 }
 
             }
-            if (score > 1){
+            if (score > 1) {
                 return new AiPlacement(optimalCol, score);
             }
         }
 
         return null;
     }
-
 
     private AiPlacement findColForRow(char[][] array) {
         int score = 1;
@@ -102,56 +109,55 @@ public class Ai {
 
             String currentRowString = String.valueOf(currentRow);
 
-            if (currentRowString.contains("-y-y-")){
+            if (currentRowString.contains("-y-y-")) {
 
                 int colIndex = currentRowString.indexOf("-y-y-");
                 int colToReturn = colIndex + 2;
 
                 score = 3;
-                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row+1][colIndex] != empty && array[row+1][colIndex+4] != empty) || row == bottomRow){
+                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row + 1][colIndex] != empty
+                        && array[row + 1][colIndex + 4] != empty) || row == bottomRow) {
                     return new AiPlacement(colToReturn, score);
                 }
 
             }
 
-
-            if (currentRowString.contains("--yy-")){
+            if (currentRowString.contains("--yy-")) {
                 int colIndex = currentRowString.indexOf("--yy-");
                 int colToReturn = colIndex + 1;
 
                 score = 4;
-                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row+1][colIndex] != empty && array[row+1][colIndex+4] != empty) || row == bottomRow){
+                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row + 1][colIndex] != empty
+                        && array[row + 1][colIndex + 4] != empty) || row == bottomRow) {
                     return new AiPlacement(colToReturn, score);
                 }
             }
 
-            if (currentRowString.contains("-yy--")){
+            if (currentRowString.contains("-yy--")) {
                 int colIndex = currentRowString.indexOf("-yy--");
                 int colToReturn = colIndex + 3;
 
                 score = 4;
-                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row+1][colIndex] != empty && array[row+1][colIndex+4] != empty) || row == bottomRow){
+                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row + 1][colIndex] != empty
+                        && array[row + 1][colIndex + 4] != empty) || row == bottomRow) {
                     return new AiPlacement(colToReturn, score);
                 }
             }
-
-
 
             for (int col = 0; col < board.cols() - 3; col++) {
 
                 char[] fourCols = { currentRow[col], currentRow[col + 1], currentRow[col + 2], currentRow[col + 3] };
 
-
                 if (board.countCharsInFour(fourCols, 'y', 3)) {
                     int colToReturn = String.valueOf(fourCols).indexOf(empty) + col;
-                    if (row != bottomRow && array[row+1][colToReturn] != empty || row == bottomRow){
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
                         return new AiPlacement(colToReturn, 6);
                     }
                 }
 
                 if (board.countCharsInFour(fourCols, 'y', 2)) {
                     int colToReturn = String.valueOf(fourCols).indexOf(empty) + col;
-                    if (row != bottomRow && array[row+1][colToReturn] != empty || row == bottomRow){
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
                         return new AiPlacement(colToReturn, 3);
                     }
                 }
@@ -173,22 +179,44 @@ public class Ai {
 
                 if (board.countCharsInFour(fourCols, 'r', 3)) {
                     int colToReturn = String.valueOf(fourCols).indexOf(empty) + col;
-                    if (row != bottomRow && array[row+1][colToReturn] != empty || row == bottomRow){
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
                         return new AiPlacement(colToReturn, 4);
                     }
                 }
 
             }
-            if (currentRowString.contains("-r-r-")){
+            if (currentRowString.contains("-r-r-")) {
 
                 int colIndex = currentRowString.indexOf("-r-r-");
                 int colToReturn = colIndex + 2;
 
                 int score = 3;
-                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row+1][colIndex] != empty && array[row+1][colIndex+4] != empty) || row == bottomRow){
+                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row + 1][colIndex] != empty
+                        && array[row + 1][colIndex + 4] != empty) || row == bottomRow) {
                     return new AiPlacement(colToReturn, score);
                 }
 
+            }
+            if (currentRowString.contains("--rr-")) {
+                int colIndex = currentRowString.indexOf("--rr-");
+                int colToReturn = colIndex + 1;
+
+                int score = 4;
+                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row + 1][colIndex] != empty
+                        && array[row + 1][colIndex + 4] != empty) || row == bottomRow) {
+                    return new AiPlacement(colToReturn, score);
+                }
+            }
+
+            if (currentRowString.contains("-rr--")) {
+                int colIndex = currentRowString.indexOf("-rr--");
+                int colToReturn = colIndex + 3;
+
+                int score = 4;
+                if ((row != bottomRow && array[row + 1][colToReturn] != empty && array[row + 1][colIndex] != empty
+                        && array[row + 1][colIndex + 4] != empty) || row == bottomRow) {
+                    return new AiPlacement(colToReturn, score);
+                }
             }
         }
         return null;
@@ -225,7 +253,7 @@ public class Ai {
                     int sequenceIndex = String.valueOf(sequence).indexOf(empty);
                     colToReturn = sequenceIndex + col;
 
-                    e4 = array[row - sequenceIndex + 1][colToReturn]; 
+                    e4 = array[row - sequenceIndex + 1][colToReturn];
 
                     if (e4 != empty && yORr == 'y') {
                         return new AiPlacement(colToReturn, 6);
@@ -234,15 +262,28 @@ public class Ai {
                         return new AiPlacement(colToReturn, 5);
                     }
                 }
+            }
+        }
+        for (int row = 3; row < board.rows(); row++) {
+            for (int col = 0; col <= board.cols() - 4; col++) {
+
+                int colToReturn = -1;
+
+                char a0 = array[row][col];
+                char b1 = array[row - 1][col + 1];
+                char c2 = array[row - 2][col + 2];
+                char d3 = array[row - 3][col + 3];
+
+                char[] sequence = { a0, b1, c2, d3 };
                 if (board.countCharsInFour(sequence, 'y', 2)) {
                     colToReturn = String.valueOf(sequence).indexOf(empty) + col;
-                    if (row != bottomRow && array[row+1][colToReturn] != empty || row == bottomRow){
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
                         return new AiPlacement(colToReturn, 2);
                     }
                 }
                 if (board.countCharsInFour(sequence, 'y', 1)) {
                     colToReturn = String.valueOf(sequence).indexOf(empty) + col;
-                    if (row != bottomRow && array[row+1][colToReturn] != empty || row == bottomRow){
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
                         return new AiPlacement(colToReturn, 1);
                     }
                 }
@@ -252,6 +293,7 @@ public class Ai {
     }
 
     private AiPlacement findColForDownDiag(char[][] array, char yORr) {
+
         for (int row = 0; row <= board.rows() - 4; row++) {
             for (int col = 0; col <= board.cols() - 4; col++) {
                 int colToReturn = -1;
@@ -278,18 +320,44 @@ public class Ai {
                 }
                 if (board.countCharsInFour(sequence, 'y', 2)) {
                     colToReturn = String.valueOf(sequence).indexOf(empty) + col;
-                    if (row != bottomRow && array[row+1][colToReturn] != empty || row == bottomRow){
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
                         return new AiPlacement(colToReturn, 2);
                     }
                 }
                 if (board.countCharsInFour(sequence, 'y', 1)) {
                     colToReturn = String.valueOf(sequence).indexOf(empty) + col;
-                    if (row != bottomRow && array[row+1][colToReturn] != empty || row == bottomRow){
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
                         return new AiPlacement(colToReturn, 1);
                     }
                 }
             }
-            
+
+        }
+
+        for (int row = 0; row <= board.rows() - 4; row++) {
+            for (int col = 0; col <= board.cols() - 4; col++) {
+                int colToReturn = -1;
+
+                char a0 = array[row][col];
+                char b1 = array[row + 1][col + 1];
+                char c2 = array[row + 2][col + 2];
+                char d3 = array[row + 3][col + 3];
+
+                char[] sequence = { a0, b1, c2, d3 };
+                if (board.countCharsInFour(sequence, 'y', 2)) {
+                    colToReturn = String.valueOf(sequence).indexOf(empty) + col;
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
+                        return new AiPlacement(colToReturn, 2);
+                    }
+                }
+                if (board.countCharsInFour(sequence, 'y', 1)) {
+                    colToReturn = String.valueOf(sequence).indexOf(empty) + col;
+                    if (row != bottomRow && array[row + 1][colToReturn] != empty || row == bottomRow) {
+                        return new AiPlacement(colToReturn, 1);
+                    }
+                }
+            }
+
         }
         return null;
     }
@@ -337,5 +405,4 @@ public class Ai {
         return optimalCol;
 
     }
-
 }

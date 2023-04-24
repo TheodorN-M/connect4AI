@@ -21,7 +21,7 @@ public interface ViewableConnectModel {
   Iterable<GridCell<Character>> getHolesOnBoard();
 
   /**
-   * Returns the current GameState, {@code ACTIVE_GAME} or {@code GAME_OVER}
+   * Returns the current GameState, {@code ACTIVE_GAME}, {@code GAME_OVER} or {@code AI_ACTIVE}
    * 
    * @return a Gamestate-Object
    */

@@ -10,7 +10,7 @@ import no.uib.inf101.sem2.view.ConnectView;
 public class Main {
   public static void main(String[] args) {
     ConnectBoard board = new ConnectBoard(6, 7);
-    ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE); // GameState.ACTIVE_GAME
+    ConnectModel model = new ConnectModel(board, GameState.AI_ACTIVE); // GameState.AI_ACTIVE
     ConnectView view = new ConnectView(model);
     
 

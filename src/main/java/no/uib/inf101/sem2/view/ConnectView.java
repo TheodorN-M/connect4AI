@@ -72,7 +72,7 @@ public class ConnectView extends JPanel {
    * @param theme     for colors in the cells
    */
   private void drawPiecesAndHolesInBoard(Graphics2D g, Iterable<GridCell<Character>> table,
-                                         CellPositionToPixelConverter converter, ColorTheme theme) {
+      CellPositionToPixelConverter converter, ColorTheme theme) {
 
     for (GridCell<Character> gridCell : table) {
       CellPosition pos = gridCell.pos();

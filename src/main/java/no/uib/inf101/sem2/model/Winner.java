@@ -8,6 +8,11 @@ public class Winner {
 
     }
 
+    /**
+     * Iterates through the board to find four equal pieces in a row.
+     * 
+     * @return a string "Red" or "Yellow" if anyone has won
+     */
     public String findWinner() {
         // Find horizontal winner with prettyString method
         if (board.prettyString().contains("rrrr")) {

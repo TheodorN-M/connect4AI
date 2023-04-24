@@ -58,7 +58,7 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
         return gameState;
     }
 
-    public void setGameOver() {
+    private void setGameOver() {
         gameState = GameState.GAME_OVER;
     }
 
@@ -74,6 +74,10 @@ public class ConnectModel implements ViewableConnectModel, ControllableModel {
             if (gameState == GameState.AI_ACTIVE && turn == Turn.YELLOW){
                 ai.aiPlacePiece();
             }
+        }
+        else if (board.isFull()){
+            won = "Draw";
+            setGameOver();
         }
     }
 

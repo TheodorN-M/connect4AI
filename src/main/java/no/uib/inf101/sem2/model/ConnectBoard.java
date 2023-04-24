@@ -31,6 +31,12 @@ public class ConnectBoard extends Grid<Character> {
 
     }
 
+    /**
+     * Creates a character array for the current characters in a given column
+     * 
+     * @param col an integer for the column to check
+     * @return a char[] with all current characters in the column
+     */
     public char[] getCharArrayForCol(int col) {
         char[] array = new char[rows()];
         for (int i = 0; i < rows(); i++) {
@@ -39,6 +45,11 @@ public class ConnectBoard extends Grid<Character> {
         return array;
     }
 
+    /**
+     * Makes the board into a double character array
+     * 
+     * @return char[][] with all current characters in the board
+     */
     public char[][] getBoardAs2DArray() {
         char[][] array = new char[rows()][cols()];
         for (int row = 0; row < rows(); row++) {
@@ -98,10 +109,29 @@ public class ConnectBoard extends Grid<Character> {
         return false;
     }
 
+    /**
+     * Clears the board.
+     * 
+     * <strong>Only</strong> for tests!
+     */
     public void clear() {
         for (GridCell<Character> gridCell : this) {
             set(gridCell.pos(), '-');
         }
+    }
+
+    /**
+     * Checks if the board is full
+     * 
+     * @return
+     */
+    public boolean isFull() {
+        for (GridCell<Character> gridCell : this) {
+            if (gridCell.value() == '-') {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
