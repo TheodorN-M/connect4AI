@@ -1,15 +1,15 @@
 # Connect Four
 
-### Hvordan man spiller
+### How to play
 
-Spillet spilles mellom to brukere, Rød og Gul. Rød begynner.
+The game is played between yellow and red pieces. Red to begin.
 
-Spiller 1 plasserer sin første brikke på brettet. Brikken vil falle ned til nederste ledige plass. Det er nå spiller to sin tur. En vinner kåres når en av spillerene har fire brikker av sin farge på rad, enten horisontalt, vertikalt eller diagonalt.
+Player one places their first piece on the board. The piece will, as in the original physical version of the game, fall down to the bottom open spot. Now, player two to place. A winner is decided when one of the players has four pieces in a row, horizontally, vertically or diagonally.
 
-## AI motstander
-Spillet har innebygget AI-funksjon. For å aktivere denne, må GameState-en settes til 'GameState.AI_ACTIVE'. For two-player: 'GameState.ACTIVE_GAME'. Pass på! Det er fort gjort å overse muligheter :)
+## AI competitor
+The game has a built-in AI-player. To activate, GameState must be set to `GameState.AI_ACTIVE`. For two-player: `GameState.ACTIVE_GAME`. Watch out! It is easy to oversee opportunities!
 
-Lenke til videodemonstrasjon:
+Link to videodemonstration:
 https://youtu.be/pgKkd06IBVo
 
 
